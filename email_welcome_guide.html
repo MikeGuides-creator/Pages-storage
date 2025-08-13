@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Welcome Sequence for New Subscribers</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background-color: #f5f7fa; margin: 0; padding: 0;">
+
+<div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+    <!-- Header -->
+    <div style="background-color: #805ad5; color: white; text-align: center; padding: 40px 20px; border-radius: 15px; margin-bottom: 30px;">
+        <h1 style="font-size: 2.5em; margin-bottom: 10px;">💌 Email Welcome Sequence</h1>
+        <p style="font-size: 1.2em; opacity: 0.9;">Build engaging sequences that nurture new subscribers</p>
+    </div>
+
+    <!-- Progress Section -->
+    <div style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <h3>Your Progress</h3>
+        <div style="background-color: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+            <div id="progressFill" style="height: 100%; background-color: #805ad5; width: 0%; transition: width 0.5s ease; border-radius: 4px;"></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 15px;">
+            <div id="step1-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #2d3748; border: 2px solid #805ad5;">Plan Sequence</div>
+            <div id="step2-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Choose Length</div>
+            <div id="step3-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Draft Emails</div>
+            <div id="step4-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Set Timing</div>
+            <div id="step5-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Test Flow</div>
+        </div>
+    </div>
+
+    <!-- Prerequisites -->
+    <div style="background-color: white; border-radius: 10px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <div style="background-color: #faf5ff; border-left: 4px solid #805ad5; padding: 20px; border-radius: 0 8px 8px 0; margin-bottom: 30px;">
+            <h3>📋 Prerequisites</h3>
+            <ul>
+                <li>Email marketing tool (MailerLite, ConvertKit, etc.)</li>
+                <li>A clear brand or content offer</li>
+                <li>Lead magnet or signup incentive</li>
+                <li>Basic understanding of your audience</li>
+            </ul>
+            <p><strong>Promise:</strong> By the end of this guide, you'll have a complete automated welcome sequence ready to nurture new subscribers and build relationships!</p>
+        </div>
+    </div>
+
+    <!-- Step 1: Plan Sequence -->
+    <div id="step1" style="border: 2px solid #805ad5; border-radius: 10px; padding: 25px; margin: 20px 0; background-color: #faf5ff;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #805ad5; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">1</div>
+            <h2>Plan Sequence Purpose</h2>
+        </div>
+        
+        <p>Define the goals and strategy for your welcome sequence.</p>
+        
+        <div style="background-color: white; border: 2px solid #d6bcfa; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h4>🎯 Sequence Goal Selector</h4>
+            <p>What's the primary purpose of your welcome sequence? (Select all that apply)</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                <div onclick="selectGoal('trust')" id="trust-goal" style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">🤝</div>
+                    <h5>Build Trust</h5>
+                    <p style="font-size: 0.9em; color: #666;">Establish credibility and connection</p>
+                </div>
+                
+                <div onclick="selectGoal('deliver')" id="deliver-goal" style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">🎁</div>
+                    <h5>Deliver Value</h5>
+                    <p style="font-size: 0.9em; color: #666;">Provide promised lead magnet</p>
+                </div>
+                
+                <div onclick="selectGoal('introduce')" id="introduce-goal" style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">👋</div>
+                    <h5>Introduce Brand</h5>
+                    <p style="font-size: 0.9em; color: #666;">Share your story and mission</p>
+                </div>
+                
+                <div onclick="selectGoal('nurture')" id="nurture-goal" style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">🌱</div>
+                    <h5>Nurture Leads</h5>
+                    <p style="font-size: 0.9em; color: #666;">Warm up for future offers</p>
+                </div>
+            </div>
+            
+            <div id="goals-selected" style="background-color: #e6fffa; border: 1px solid #4fd1c7; border-radius: 8px; padding: 15px; margin-top: 15px; display: none;">
+                <h5 style="color: #065f46;">✅ Selected Goals</h5>
+                <div id="selected-goals" style="color: #065f46;"></div>
+            </div>
+        </div>
+
+        <button onclick="completeStep(1)" id="step1-btn" disabled style="background-color: #a0aec0; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: not-allowed; font-weight: bold; margin: 10px 5px;">Goals Defined ✅</button>
+    </div>
+
+    <!-- Step 2: Choose Length -->
+    <div id="step2" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #805ad5; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">2</div>
+            <h2>Choose Sequence Length</h2>
+        </div>
+        
+        <p>Decide how many emails to include based on your goals and audience.</p>
+        
+        <div style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+            <h4>📏 Length Optimizer</h4>
+            <p>Select the sequence length that best fits your strategy:</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0;">
+                <div onclick="selectLength(3)" id="length-3" style="background-color: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; cursor: pointer;">
+                    <h5 style="color: #805ad5; margin-bottom: 10px;">3 Emails - Concise</h5>
+                    <ul style="font-size: 0.9em; color: #666;">
+                        <li>Welcome + deliver value</li>
+                        <li>Share quick win tip</li>
+                        <li>Introduce main offer</li>
+                    </ul>
+                    <p style="margin-top: 10px; font-size: 0.8em; color: #805ad5;"><strong>Best for:</strong> Simple products, quick conversions</p>
+                </div>
+                
+                <div onclick="selectLength(5)" id="length-5" style="background-color: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; cursor: pointer;">
+                    <h5 style="color: #805ad5; margin-bottom: 10px;">5 Emails - Balanced</h5>
+                    <ul style="font-size: 0.9em; color: #666;">
+                        <li>Welcome + deliver freebie</li>
+                        <li>Personal story/value</li>
+                        <li>Teach a quick win</li>
+                        <li>Soft offer introduction</li>
+                        <li>Stronger offer + CTA</li>
+                    </ul>
+                    <p style="margin-top: 10px; font-size: 0.8em; color: #805ad5;"><strong>Best for:</strong> Most businesses, relationship building</p>
+                </div>
+                
+                <div onclick="selectLength(7)" id="length-7" style="background-color: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 20px; cursor: pointer;">
+                    <h5 style="color: #805ad5; margin-bottom: 10px;">7 Emails - Comprehensive</h5>
+                    <ul style="font-size: 0.9em; color: #666;">
+                        <li>Extended nurturing sequence</li>
+                        <li>Multiple value pieces</li>
+                        <li>Social proof integration</li>
+                        <li>Case studies/testimonials</li>
+                        <li>Progressive offer reveals</li>
+                    </ul>
+                    <p style="margin-top: 10px; font-size: 0.8em; color: #805ad5;"><strong>Best for:</strong> High-value products, complex sales</p>
+                </div>
+            </div>
+            
+            <div id="length-selected" style="background-color: #e6fffa; border: 1px solid #4fd1c7; border-radius: 8px; padding: 15px; margin-top: 15px; display: none;">
+                <h5 style="color: #065f46;">📊 Sequence Plan</h5>
+                <div id="sequence-plan" style="color: #065f46;"></div>
+            </div>
+        </div>
+
+        <button onclick="completeStep(2)" id="step2-btn" disabled style="background-color: #a0aec0; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: not-allowed; font-weight: bold; margin: 10px 5px;">Length Chosen ✅</button>
+    </div>
+
+    <!-- Step 3: Draft Emails -->
+    <div id="step3" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #805ad5; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">3</div>
+            <h2>Draft Email Content</h2>
+        </div>
+        
+        <p>Create compelling subject lines and content for each email in your sequence.</p>
+        
+        <div style="background-color: #faf5ff; border: 2px solid #d6bcfa; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h4>✍️ Email Builder</h4>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Select Email to Edit:</label>
+                <select id="email-selector" onchange="loadEmail()" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+                    <option value="1">Email 1: Welcome & Deliver Value</option>
+                </select>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin: 20px 0;">
+                <div>
+                    <h5>📝 Email Details</h5>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Subject Line:</label>
+                        <input type="text" id="subject-line" placeholder="Your freebie is here! + Welcome to [Brand]" onkeyup="updatePreview()" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+                        
+                        <div style="margin-top: 10px;">
+                            <button onclick="testSubjectLine()" style="background-color: #805ad5; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">Test Subject Line</button>
+                            <div id="subject-score" style="margin-top: 8px; font-size: 0.9em;"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Preview Text:</label>
+                        <input type="text" id="preview-text" placeholder="Get instant access to your download..." onkeyup="updatePreview()" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Call-to-Action:</label>
+                        <input type="text" id="cta-text" placeholder="Download Your Free Guide" onkeyup="updatePreview()" style="width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+                    </div>
+                </div>
+                
+                <div>
+                    <h5>📱 Email Preview</h5>
+                    <div style="background-color: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; max-height: 400px; overflow-y: auto;">
+                        <!-- Inbox Preview -->
+                        <div style="background-color: #f7fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; margin-bottom: 15px;">
+                            <div style="font-weight: bold; font-size: 0.9em;" id="preview-subject">Subject line will appear here</div>
+                            <div style="color: #666; font-size: 0.8em;" id="preview-snippet">Preview text will appear here...</div>
+                        </div>
+                        
+                        <!-- Email Content -->
+                        <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px;">
+                            <div style="font-size: 1.1em; font-weight: bold; margin-bottom: 15px;">Hi [First Name]!</div>
+                            <div style="margin-bottom: 15px;">Welcome to [Your Brand]! I'm so excited you've joined our community.</div>
+                            <div style="margin-bottom: 15px;">As promised, here's your free [Lead Magnet Name]. I know you're going to love it!</div>
+                            <div style="text-align: center; margin: 20px 0;">
+                                <div id="preview-cta" style="background-color: #805ad5; color: white; padding: 12px 24px; border-radius: 6px; display: inline-block; font-weight: bold;">Download Button</div>
+                            </div>
+                            <div style="margin-bottom: 15px;">Over the next few days, I'll be sharing some of my best tips and insights to help you [achieve goal].</div>
+                            <div>Looking forward to connecting with you!</div>
+                            <div style="margin-top: 15px; font-weight: bold;">[Your Name]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <button onclick="saveEmail()" style="background-color: #48bb78; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold;">Save Email</button>
+                <button onclick="nextEmail()" id="next-email-btn" style="background-color: #805ad5; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-left: 10px;">Next Email →</button>
+            </div>
+            
+            <div id="emails-status" style="background-color: #e6fffa; border: 1px solid #4fd1c7; border-radius: 8px; padding: 15px; margin-top: 20px; display: none;">
+                <h5 style="color: #065f46;">📧 Emails Drafted</h5>
+                <div id="drafted-count" style="color: #065f46;">0 of 3 emails completed</div>
+            </div>
+        </div>
+
+        <button onclick="completeStep(3)" id="step3-btn" disabled style="background-color: #a0aec0; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: not-allowed; font-weight: bold; margin: 10px 5px;">Emails Drafted ✅</button>
+    </div>
+
+    <!-- Step 4: Set Timing -->
+    <div id="step4" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #805ad5; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">4</div>
+            <h2>Set Email Timing</h2>
+        </div>
+        
+        <p>Configure when each email should be sent after someone subscribes.</p>
+        
+        <div style="background-color: #fffbf0; border: 2px solid #f6d55c; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h4>⏰ Timing Optimizer</h4>
+            <p>Set delays between emails for optimal engagement:</p>
+            
+            <div id="timing-builder" style="margin: 20px 0;">
+                <!-- Email timing cards will be generated here -->
+            </div>
+            
+            <div style="background-color: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-top: 20px;">
+                <h5>📊 Sequence Timeline</h5>
+                <div id="timeline-preview" style="margin-top: 10px;">
+                    <div style="color: #666;">Configure email timing above to see your sequence timeline</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                <strong>Timing Best Practices:</strong>
+                <ul style="margin-top: 5px;">
+                    <li>Email 1: Immediate (deliver promised value)</li>
+                    <li>Email 2: 1-2 days (optimal engagement window)</li>
+                    <li>Email 3+: 2-3 days apart (avoid overwhelm)</li>
+                    <li>Consider your audience's patience level</li>
+                </ul>
+            </div>
+        </div>
+
+        <button onclick="completeStep(4)" id="step4-btn" style="background-color: #805ad5; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">Timing Set ✅</button>
+    </div>
+
+    <!-- Step 5: Test Flow -->
+    <div id="step5" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #805ad5; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">5</div>
+            <h2>Test Your Sequence</h2>
+        </div>
+        
+        <p>Review and test your complete welcome sequence before going live.</p>
+        
+        <div style="background-color: #f0fff4; border: 2px solid #9ae6b4; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h4>🧪 Sequence Tester</h4>
+            
+            <div style="background-color: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 15px 0;">
+                <h5>📋 Pre-Launch Checklist</h5>
+                <ul style="list-style: none; padding: 0;">
+                    <li onclick="toggleCheck(this)" style="padding: 8px 0; cursor: pointer; display: flex; align-items: center;">
+                        <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                        <div>
+                            <strong>All emails have compelling subject lines</strong><br>
+                            <small style="color: #666;">Clear, curiosity-driven, avoid spam words</small>
+                        </div>
+                    </li>
+                    
+                    <li onclick="toggleCheck(this)" style="padding: 8px 0; cursor: pointer; display: flex; align-items: center;">
+                        <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                        <div>
+                            <strong>Lead magnet delivery works</strong><br>
+                            <small style="color: #666;">Download links are active and working</small>
+                        </div>
+                    </li>
+                    
+                    <li onclick="toggleCheck(this)" style="padding: 8px 0; cursor: pointer; display: flex; align-items: center;">
+                        <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                        <div>
+                            <strong>Personal story included</strong><br>
+                            <small style="color: #666;">Builds connection and trust with subscribers</small>
+                        </div>
+                    </li>
+                    
+                    <li onclick="toggleCheck(this)" style="padding: 8px 0; cursor: pointer; display: flex; align-items: center;">
+                        <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                        <div>
+                            <strong>Clear calls-to-action</strong><br>
+                            <small style="color: #666;">Each email has a specific, clear next step</small>
+                        </div>
+                    </li>
+                    
+                    <li onclick="toggleCheck(this)" style="padding: 8px 0; cursor: pointer; display: flex; align-items: center;">
+                        <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                        <div>
+                            <strong>Mobile-friendly formatting</strong><br>
+                            <small style="color: #666;">Short paragraphs, scannable content</small>
+                        </div>
+                    </li>
+                    
+                    <li onclick="toggleCheck(this)" style="padding: 8px 0; cursor: pointer; display: flex; align-items: center;">
+                        <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                        <div>
+                            <strong>Timing delays configured</strong><br>
+                            <small style="color: #666;">Appropriate spacing between emails</small>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div style="background-color: #ebf8ff; border: 1px solid #90cdf4; border-radius: 8px; padding: 15px; margin-top: 15px;">
+                <h5>🚀 Test Subscription</h5>
+                <p style="margin-bottom: 15px;">Subscribe to your own sequence to experience it firsthand:</p>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="email" placeholder="your-test-email@gmail.com" style="flex: 1; padding: 10px; border: 1px solid #e2e8f0; border-radius: 4px;">
+                    <button onclick="testSubscription()" style="background-color: #3182ce; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Test Subscribe</button>
+                </div>
+            </div>
+            
+            <div id="test-result" style="background-color: #f0fff4; border: 1px solid #9ae6b4; border-radius: 8px; padding: 15px; margin-top: 15px; display: none;">
+                <h5 style="color: #276749;">✅ Test Subscription Activated!</h5>
+                <p style="color: #276749; margin: 0;">Check your email inbox and spam folder. You should receive your sequence emails according to the timing you set.</p>
+            </div>
+        </div>
+
+        <button onclick="completeStep(5)" id="step5-btn" style="background-color: #805ad5; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">Sequence Ready! 🎉</button>
+    </div>
+
+    <!-- Troubleshooting Section -->
+    <div style="background-color: #faf5ff; border-radius: 10px; padding: 20px; margin: 30px 0;">
+        <h3>🔧 Common Speed Bumps & Fixes</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <thead>
+                <tr>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #805ad5; color: white; font-weight: bold;">Problem</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #805ad5; color: white; font-weight: bold;">Cause</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #805ad5; color: white; font-weight: bold;">Fix</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Emails go to spam</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Words/images trigger filters</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Use plain text, fewer links</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Low open rates</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Weak subject lines</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Add curiosity, clarity</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Sequence too long</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Subscriber fatigue</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Trim to 3-4 core emails</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Final Deliverable -->
+    <div style="background-color: #f0f8ff; border: 2px solid #4299e1; border-radius: 10px; padding: 25px; margin: 30px 0; text-align: center;">
+        <h3 style="color: #2b6cb0; margin-bottom: 15px;">🎯 Your Deliverable</h3>
+        <p><strong>Automated welcome sequence ready to run and nurture new subscribers.</strong></p>
+        <p style="margin-top: 15px;">Congratulations! You now have a complete email sequence that will automatically build relationships with new subscribers and guide them toward your offers!</p>
+    </div>
+</div>
+
+<script>
+var completedSteps = 0;
+var totalSteps = 5;
+var selectedGoals = [];
+var sequenceLength = 0;
+var currentEmailIndex = 1;
+var emailsData = {};
+var checkedItems = 0;
+
+function updateProgress() {
+    var progress = (completedSteps / totalSteps) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+}
+
+function completeStep(stepNumber) {
+    var stepSection = document.getElementById('step' + stepNumber);
+    var stepIndicator = document.getElementById('step' + stepNumber + '-indicator');
+    var stepBtn = document.getElementById('step' + stepNumber + '-btn');
+    
+    stepSection.style.borderColor = '#48bb78';
+    stepSection.style.backgroundColor = '#f0fff4';
+    stepIndicator.style.backgroundColor = '#f0fff4';
+    stepIndicator.style.color = '#38a169';
+    stepBtn.style.backgroundColor = '#48bb78';
+    stepBtn.disabled = true;
+    
+    completedSteps++;
+    updateProgress();
+    
+    if (stepNumber < totalSteps) {
+        var nextStep = stepNumber + 1;
+        var nextStepSection = document.getElementById('step' + nextStep);
+        var nextStepIndicator = document.getElementById('step' + nextStep + '-indicator');
+        
+        nextStepSection.style.borderColor = '#805ad5';
+        nextStepSection.style.backgroundColor = '#faf5ff';
+        nextStepIndicator.style.backgroundColor = '#faf5ff';
+        nextStepIndicator.style.color = '#2d3748';
+        nextStepIndicator.style.border = '2px solid #805ad5';
+    }
+}
+
+function selectGoal(goalType) {
+    var goalElement = document.getElementById(goalType + '-goal');
+    var index = selectedGoals.indexOf(goalType);
+    
+    if (index === -1) {
+        selectedGoals.push(goalType);
+        goalElement.style.borderColor = '#805ad5';
+        goalElement.style.backgroundColor = '#faf5ff';
+    } else {
+        selectedGoals.splice(index, 1);
+        goalElement.style.borderColor = '#e2e8f0';
+        goalElement.style.backgroundColor = '#f7fafc';
+    }
+    
+    if (selectedGoals.length > 0) {
+        document.getElementById('goals-selected').style.display = 'block';
+        var goalTexts = selectedGoals.map(function(goal) {
+            var goalMap = {
+                'trust': 'Build Trust',
+                'deliver': 'Deliver Value', 
+                'introduce': 'Introduce Brand',
+                'nurture': 'Nurture Leads'
+            };
+            return goalMap[goal];
+        });
+        document.getElementById('selected-goals').textContent = 'Your sequence will: ' + goalTexts.join(', ');
+        
+        document.getElementById('step1-btn').disabled = false;
+        document.getElementById('step1-btn').style.backgroundColor = '#805ad5';
+        document.getElementById('step1-btn').style.cursor = 'pointer';
+    } else {
+        document.getElementById('goals-selected').style.display = 'none';
+        document.getElementById('step1-btn').disabled = true;
+        document.getElementById('step1-btn').style.backgroundColor = '#a0aec0';
+    }
+}
+
+function selectLength(length) {
+    sequenceLength = length;
+    
+    // Reset all length options
+    var lengths = [3, 5, 7];
+    for (var i = 0; i < lengths.length; i++) {
+        var lengthElement = document.getElementById('length-' + lengths[i]);
+        lengthElement.style.borderColor = '#e2e8f0';
+        lengthElement.style.backgroundColor = 'white';
+    }
+    
+    // Highlight selected
+    var selectedElement = document.getElementById('length-' + length);
+    selectedElement.style.borderColor = '#805ad5';
+    selectedElement.style.backgroundColor = '#faf5ff';
+    
+    document.getElementById('length-selected').style.display = 'block';
+    document.getElementById('sequence-plan').textContent = 'You will create a ' + length + '-email welcome sequence.';
+    
+    // Update email selector
+    updateEmailSelector();
+    generateTimingBuilder();
+    
+    document.getElementById('step2-btn').disabled = false;
+    document.getElementById('step2-btn').style.backgroundColor = '#805ad5';
+    document.getElementById('step2-btn').style.cursor = 'pointer';
+}
+
+function updateEmailSelector() {
+    var selector = document.getElementById('email-selector');
+    selector.innerHTML = '';
+    
+    var emailTemplates = {
+        1: 'Email 1: Welcome & Deliver Value',
+        2: 'Email 2: Personal Story/Value',
+        3: 'Email 3: Teach Quick Win',
+        4: 'Email 4: Soft Offer Introduction',
+        5: 'Email 5: Stronger Offer + CTA',
+        6: 'Email 6: Social Proof',
+        7: 'Email 7: Final Call to Action'
+    };
+    
+    for (var i = 1; i <= sequenceLength; i++) {
+        var option = document.createElement('option');
+        option.value = i;
+        option.textContent = emailTemplates[i];
+        selector.appendChild(option);
+    }
+}
+
+function loadEmail() {
+    var emailIndex = document.getElementById('email-selector').value;
+    currentEmailIndex = parseInt(emailIndex);
+    
+    if (emailsData[emailIndex]) {
+        document.getElementById('subject-line').value = emailsData[emailIndex].subject || '';
+        document.getElementById('preview-text').value = emailsData[emailIndex].preview || '';
+        document.getElementById('cta-text').value = emailsData[emailIndex].cta || '';
+    } else {
+        document.getElementById('subject-line').value = '';
+        document.getElementById('preview-text').value = '';
+        document.getElementById('cta-text').value = '';
+    }
+    
+    updatePreview();
+}
+
+function updatePreview() {
+    var subject = document.getElementById('subject-line').value || 'Subject line will appear here';
+    var preview = document.getElementById('preview-text').value || 'Preview text will appear here...';
+    var cta = document.getElementById('cta-text').value || 'Download Button';
+    
+    document.getElementById('preview-subject').textContent = subject;
+    document.getElementById('preview-snippet').textContent = preview;
+    document.getElementById('preview-cta').textContent = cta;
+}
+
+function testSubjectLine() {
+    var subject = document.getElementById('subject-line').value;
+    var score = 0;
+    var feedback = [];
+    
+    if (subject.length >= 30 && subject.length <= 50) {
+        score += 25;
+        feedback.push('✅ Good length');
+    } else {
+        feedback.push('⚠️ Aim for 30-50 characters');
+    }
+    
+    if (subject.includes('!') || subject.includes('?')) {
+        score += 25;
+        feedback.push('✅ Engaging punctuation');
+    }
+    
+    if (subject.toLowerCase().includes('free') || subject.toLowerCase().includes('welcome')) {
+        score += 25;
+        feedback.push('✅ Contains value words');
+    }
+    
+    if (!subject.toLowerCase().includes('urgent') && !subject.toLowerCase().includes('act now')) {
+        score += 25;
+        feedback.push('✅ Avoids spam words');
+    } else {
+        feedback.push('⚠️ Contains potential spam words');
+    }
+    
+    var scoreColor = score >= 75 ? '#48bb78' : score >= 50 ? '#ed8936' : '#e53e3e';
+    document.getElementById('subject-score').innerHTML = 
+        '<div style="color: ' + scoreColor + '; font-weight: bold;">Score: ' + score + '/100</div>' +
+        '<div style="font-size: 0.8em; margin-top: 5px;">' + feedback.join('<br>') + '</div>';
+}
+
+function saveEmail() {
+    var subject = document.getElementById('subject-line').value;
+    var preview = document.getElementById('preview-text').value;
+    var cta = document.getElementById('cta-text').value;
+    
+    emailsData[currentEmailIndex] = {
+        subject: subject,
+        preview: preview,
+        cta: cta
+    };
+    
+    updateEmailsStatus();
+}
+
+function nextEmail() {
+    saveEmail();
+    if (currentEmailIndex < sequenceLength) {
+        currentEmailIndex++;
+        document.getElementById('email-selector').value = currentEmailIndex;
+        loadEmail();
+    }
+}
+
+function updateEmailsStatus() {
+    var completed = Object.keys(emailsData).length;
+    document.getElementById('emails-status').style.display = 'block';
+    document.getElementById('drafted-count').textContent = completed + ' of ' + sequenceLength + ' emails completed';
+    
+    if (completed >= sequenceLength) {
+        document.getElementById('step3-btn').disabled = false;
+        document.getElementById('step3-btn').style.backgroundColor = '#805ad5';
+        document.getElementById('step3-btn').style.cursor = 'pointer';
+    }
+}
+
+function generateTimingBuilder() {
+    var timingBuilder = document.getElementById('timing-builder');
+    timingBuilder.innerHTML = '';
+    
+    for (var i = 1; i <= sequenceLength; i++) {
+        var emailCard = document.createElement('div');
+        emailCard.style.cssText = 'background-color: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin: 10px 0; display: flex; justify-content: space-between; align-items: center;';
+        
+        var emailInfo = document.createElement('div');
+        emailInfo.innerHTML = '<strong>Email ' + i + '</strong><br><small style="color: #666;">Welcome & Deliver Value</small>';
+        
+        var timingControl = document.createElement('div');
+        if (i === 1) {
+            timingControl.innerHTML = '<span style="color: #48bb78; font-weight: bold;">Immediate</span>';
+        } else {
+            timingControl.innerHTML = 
+                '<select onchange="updateTimeline()" style="padding: 5px; border: 1px solid #e2e8f0; border-radius: 4px;">' +
+                '<option value="1">1 day later</option>' +
+                '<option value="2">2 days later</option>' +
+                '<option value="3">3 days later</option>' +
+                '<option value="5">5 days later</option>' +
+                '<option value="7">1 week later</option>' +
+                '</select>';
+        }
+        
+        emailCard.appendChild(emailInfo);
+        emailCard.appendChild(timingControl);
+        timingBuilder.appendChild(emailCard);
+    }
+    
+    updateTimeline();
+}
+
+function updateTimeline() {
+    var timeline = document.getElementById('timeline-preview');
+    var timelineHtml = '';
+    var currentDay = 0;
+    
+    for (var i = 1; i <= sequenceLength; i++) {
+        if (i === 1) {
+            timelineHtml += '<div style="padding: 5px 0; border-left: 3px solid #805ad5; padding-left: 15px; margin: 5px 0;">Day 0: Email ' + i + ' (Immediate)</div>';
+        } else {
+            var selects = document.querySelectorAll('#timing-builder select');
+            var delay = selects[i-2] ? parseInt(selects[i-2].value) : 2;
+            currentDay += delay;
+            timelineHtml += '<div style="padding: 5px 0; border-left: 3px solid #cbd5e0; padding-left: 15px; margin: 5px 0;">Day ' + currentDay + ': Email ' + i + '</div>';
+        }
+    }
+    
+    timeline.innerHTML = timelineHtml;
+}
+
+function testSubscription() {
+    document.getElementById('test-result').style.display = 'block';
+}
+
+function toggleCheck(item) {
+    var checkbox = item.querySelector('span');
+    if (checkbox.textContent === '☐') {
+        checkbox.textContent = '✅';
+        item.style.backgroundColor = '#f0fff4';
+        checkedItems++;
+    } else {
+        checkbox.textContent = '☐';
+        item.style.backgroundColor = 'white';
+        checkedItems--;
+    }
+}
+
+// Initialize
+window.onload = function() {
+    document.getElementById('step1').style.borderColor = '#805ad5';
+    document.getElementById('step1').style.backgroundColor = '#faf5ff';
+    document.getElementById('step1-indicator').style.backgroundColor = '#faf5ff';
+    document.getElementById('step1-indicator').style.color = '#2d3748';
+    document.getElementById('step1-indicator').style.border = '2px solid #805ad5';
+};
+</script>
+
+</body>
+</html>Problem</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #805ad5; color: white; font-weight: bold;">Cause</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #805ad5; color: white; font-weight: bold;">

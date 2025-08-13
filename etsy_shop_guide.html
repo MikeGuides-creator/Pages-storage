@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etsy Micro-Shop Launch</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background-color: #f5f7fa; margin: 0; padding: 0;">
+
+<div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+    <!-- Header -->
+    <div style="background-color: #f56500; color: white; text-align: center; padding: 40px 20px; border-radius: 15px; margin-bottom: 30px;">
+        <h1 style="font-size: 2.5em; margin-bottom: 10px;">🛍️ Etsy Micro-Shop Launch</h1>
+        <p style="font-size: 1.2em; opacity: 0.9;">Create and optimize your first Etsy shop in 6 steps</p>
+    </div>
+
+    <!-- Progress Section -->
+    <div style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <h3>Your Progress</h3>
+        <div style="background-color: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+            <div id="progressFill" style="height: 100%; background-color: #f56500; width: 0%; transition: width 0.5s ease; border-radius: 4px;"></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 15px;">
+            <div id="step1-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #fff5f0; color: #2d3748; border: 2px solid #f56500;">Create Account</div>
+            <div id="step2-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Name Shop</div>
+            <div id="step3-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Add Listings</div>
+            <div id="step4-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Setup Shipping</div>
+            <div id="step5-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Set Payment</div>
+            <div id="step6-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Publish Shop</div>
+        </div>
+    </div>
+
+    <!-- Prerequisites -->
+    <div style="background-color: white; border-radius: 10px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <div style="background-color: #fff5f0; border-left: 4px solid #f56500; padding: 20px; border-radius: 0 8px 8px 0; margin-bottom: 30px;">
+            <h3>📋 Prerequisites</h3>
+            <ul>
+                <li>Etsy account (<a href="https://etsy.com" target="_blank">Create Account</a>)</li>
+                <li>Product photos & descriptions ready</li>
+                <li>Bank account for payments</li>
+                <li>Basic product pricing knowledge</li>
+            </ul>
+            <p><strong>Promise:</strong> By the end of this guide, you'll have a live Etsy shop with 3 optimized listings ready to make sales!</p>
+        </div>
+    </div>
+
+    <!-- Step 1: Create Shop Account -->
+    <div id="step1" style="border: 2px solid #f56500; border-radius: 10px; padding: 25px; margin: 20px 0; background-color: #fff5f0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #f56500; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">1</div>
+            <h2>Create Shop Account</h2>
+        </div>
+        
+        <p>Start by registering your Etsy seller account. Go to <strong>Etsy.com → "Sell on Etsy" → Register</strong></p>
+        
+        <div style="background-color: #fffbf0; border: 1px solid #f6d55c; color: #744210; padding: 15px; border-radius: 8px; margin: 10px 0;">
+            <strong>⚠️ Important:</strong> You'll need to verify your identity and provide tax information. Have your ID and tax details ready.
+        </div>
+
+        <div style="background-color: #fef5e7; border-left: 4px solid #ed8936; padding: 20px; border-radius: 0 8px 8px 0; margin: 20px 0;">
+            <h4>📸 Account Setup Tips:</h4>
+            <ul>
+                <li>Use a professional email address</li>
+                <li>Choose a password you'll remember</li>
+                <li>Complete your profile with a photo</li>
+                <li>Add a brief bio about your shop's story</li>
+            </ul>
+        </div>
+
+        <button onclick="completeStep(1)" id="step1-btn" style="background-color: #f56500; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">✅ Account Created</button>
+    </div>
+
+    <!-- Step 2: Name Your Shop -->
+    <div id="step2" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #f56500; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">2</div>
+            <h2>Name Your Shop</h2>
+        </div>
+        
+        <p>Choose a unique, brand-aligned name that's 4-20 characters long.</p>
+        
+        <div style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+            <h4>🎯 Shop Name Generator</h4>
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2d3748;">Try Different Shop Names:</label>
+                <input type="text" id="shop-name" placeholder="e.g., CozyWoodCrafts, VintageGemFinds" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+            </div>
+            <button onclick="checkShopName()" style="background-color: #4299e1; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">Check Availability</button>
+            <div id="name-success" style="background-color: #f0fff4; border: 1px solid #9ae6b4; color: #276749; padding: 15px; border-radius: 8px; margin: 10px 0; display: none;">✅ Great choice! This name has good potential.</div>
+            
+            <div style="margin-top: 20px;">
+                <h5>Shop Name Tips:</h5>
+                <ul>
+                    <li>Include your main product type</li>
+                    <li>Keep it memorable and easy to spell</li>
+                    <li>Avoid numbers and special characters</li>
+                    <li>Consider your brand's personality</li>
+                </ul>
+            </div>
+        </div>
+
+        <button onclick="completeStep(2)" id="step2-btn" disabled style="background-color: #a0aec0; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: not-allowed; font-weight: bold; margin: 10px 5px;">Shop Named ✅</button>
+    </div>
+
+    <!-- Step 3: Add Listings -->
+    <div id="step3" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #f56500; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">3</div>
+            <h2>Add Listings</h2>
+        </div>
+        
+        <p>Create your first listing with SEO-friendly titles and descriptions.</p>
+        
+        <div style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+            <h4>🎯 Listing Builder</h4>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2d3748;">Product Title (Max 140 characters):</label>
+                <input type="text" id="listing-title" placeholder="Handmade Wooden Coffee Mug Holder - Rustic Kitchen Organizer" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;" onkeyup="updatePreview()">
+                <small id="title-count">0/140 characters</small>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2d3748;">Price ($):</label>
+                <input type="number" id="listing-price" placeholder="25.99" min="0" step="0.01" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;" onkeyup="updatePreview()">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2d3748;">Category:</label>
+                <select id="listing-category" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+                    <option value="">Select Category</option>
+                    <option value="home-living">Home & Living</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="jewelry">Jewelry</option>
+                    <option value="art">Art & Collectibles</option>
+                    <option value="craft-supplies">Craft Supplies</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="background-color: #f0f8ff; border: 2px solid #bee3f8; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h4>🔍 Keyword Optimizer</h4>
+            <p>Select relevant keywords for better search visibility:</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px;">
+                <div onclick="toggleKeyword(this)" style="background-color: #e2e8f0; padding: 8px 12px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 0.9em;">handmade</div>
+                <div onclick="toggleKeyword(this)" style="background-color: #e2e8f0; padding: 8px 12px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 0.9em;">rustic</div>
+                <div onclick="toggleKeyword(this)" style="background-color: #e2e8f0; padding: 8px 12px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 0.9em;">wooden</div>
+                <div onclick="toggleKeyword(this)" style="background-color: #e2e8f0; padding: 8px 12px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 0.9em;">kitchen</div>
+                <div onclick="toggleKeyword(this)" style="background-color: #e2e8f0; padding: 8px 12px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 0.9em;">organizer</div>
+                <div onclick="toggleKeyword(this)" style="background-color: #e2e8f0; padding: 8px 12px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 0.9em;">coffee</div>
+                <div onclick="toggleKeyword(this)" style="background-color: #e2e8f0; padding: 8px 12px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 0.9em;">home decor</div>
+                <div onclick="toggleKeyword(this)" style="background-color: #e2e8f0; padding: 8px 12px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 0.9em;">storage</div>
+                <div onclick="toggleKeyword(this)" style="background-color: #e2e8f0; padding: 8px 12px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 0.9em;">gift</div>
+                <div onclick="toggleKeyword(this)" style="background-color: #e2e8f0; padding: 8px 12px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 0.9em;">natural</div>
+            </div>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Selected: <span id="selected-keywords">0</span>/13 tags</p>
+        </div>
+
+        <div style="background-color: white; border: 2px solid #e2e8f0; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h4>📱 Listing Preview</h4>
+            <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin: 10px 0; background-color: #fafafa;">
+                <div id="preview-title" style="font-weight: bold; color: #2d3748; margin-bottom: 8px;">Your Product Title Here</div>
+                <div id="preview-price" style="color: #f56500; font-weight: bold; font-size: 1.2em;">$0.00</div>
+                <div id="preview-tags" style="margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <button onclick="completeStep(3)" id="step3-btn" disabled style="background-color: #a0aec0; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: not-allowed; font-weight: bold; margin: 10px 5px;">Listing Created ✅</button>
+    </div>
+
+    <!-- Step 4: Configure Shipping -->
+    <div id="step4" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #f56500; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">4</div>
+            <h2>Configure Shipping</h2>
+        </div>
+        
+        <p>Set up shipping rates, countries, and handling times.</p>
+        
+        <div style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+            <h4>📦 Shipping Calculator</h4>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2d3748;">Domestic Shipping ($):</label>
+                <input type="number" id="shipping-domestic" placeholder="5.99" min="0" step="0.01" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2d3748;">International Shipping ($):</label>
+                <input type="number" id="shipping-international" placeholder="15.99" min="0" step="0.01" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2d3748;">Processing Time:</label>
+                <select id="processing-time" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+                    <option value="1-2">1-2 business days</option>
+                    <option value="3-5">3-5 business days</option>
+                    <option value="1-2 weeks">1-2 weeks</option>
+                    <option value="2-3 weeks">2-3 weeks</option>
+                </select>
+            </div>
+
+            <div style="background-color: #fffbf0; border: 1px solid #f6d55c; color: #744210; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                <strong>💡 Shipping Tip:</strong> Use Etsy's shipping calculator for accurate rates. Consider offering free shipping by building it into your product price.
+            </div>
+        </div>
+
+        <button onclick="completeStep(4)" id="step4-btn" style="background-color: #f56500; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">Shipping Configured ✅</button>
+    </div>
+
+    <!-- Step 5: Set Payment & Billing -->
+    <div id="step5" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #f56500; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">5</div>
+            <h2>Set Payment & Billing</h2>
+        </div>
+        
+        <p>Connect your bank account and set up payment processing.</p>
+        
+        <div style="background-color: #f0fff4; border: 2px solid #9ae6b4; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h4>💰 Fee Calculator</h4>
+            <p>Understand Etsy's fees before setting final prices:</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 15px;">
+                <div style="background-color: white; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2d3748;">Item Price ($):</label>
+                    <input type="number" id="item-price" placeholder="25.00" min="0" step="0.01" onkeyup="calculateFees()" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+                </div>
+                <div style="background-color: white; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #2d3748;">Shipping ($):</label>
+                    <input type="number" id="shipping-fee" placeholder="5.99" min="0" step="0.01" onkeyup="calculateFees()" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em;">
+                </div>
+                <div style="background-color: #38a169; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">
+                    <div>Total Fees:</div>
+                    <div id="total-fees">$0.00</div>
+                </div>
+                <div style="background-color: #38a169; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold;">
+                    <div>You Keep:</div>
+                    <div id="you-keep">$0.00</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                <strong>Etsy Fees Breakdown:</strong>
+                <ul style="margin-top: 5px;">
+                    <li>Listing fee: $0.20 per item</li>
+                    <li>Transaction fee: 6.5% of item price + shipping</li>
+                    <li>Payment processing: 3% + $0.25</li>
+                </ul>
+            </div>
+        </div>
+
+        <button onclick="completeStep(5)" id="step5-btn" style="background-color: #f56500; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">Payment Setup ✅</button>
+    </div>
+
+    <!-- Step 6: Publish Shop -->
+    <div id="step6" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #f56500; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">6</div>
+            <h2>Publish Shop</h2>
+        </div>
+        
+        <p>Go live with at least 3 listings and complete your shop profile.</p>
+        
+        <div style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+            <h4>🚀 Pre-Launch Checklist</h4>
+            <ul style="list-style: none; padding: 0;">
+                <li onclick="toggleCheck(this)" style="padding: 8px 0; position: relative; padding-left: 30px; cursor: pointer;">
+                    <span style="position: absolute; left: 0; font-size: 1.2em; color: #a0aec0;">☐</span>
+                    Shop name and logo added
+                </li>
+                <li onclick="toggleCheck(this)" style="padding: 8px 0; position: relative; padding-left: 30px; cursor: pointer;">
+                    <span style="position: absolute; left: 0; font-size: 1.2em; color: #a0aec0;">☐</span>
+                    At least 3 listings created
+                </li>
+                <li onclick="toggleCheck(this)" style="padding: 8px 0; position: relative; padding-left: 30px; cursor: pointer;">
+                    <span style="position: absolute; left: 0; font-size: 1.2em; color: #a0aec0;">☐</span>
+                    Shop policies written
+                </li>
+                <li onclick="toggleCheck(this)" style="padding: 8px 0; position: relative; padding-left: 30px; cursor: pointer;">
+                    <span style="position: absolute; left: 0; font-size: 1.2em; color: #a0aec0;">☐</span>
+                    About section completed
+                </li>
+                <li onclick="toggleCheck(this)" style="padding: 8px 0; position: relative; padding-left: 30px; cursor: pointer;">
+                    <span style="position: absolute; left: 0; font-size: 1.2em; color: #a0aec0;">☐</span>
+                    High-quality photos uploaded
+                </li>
+                <li onclick="toggleCheck(this)" style="padding: 8px 0; position: relative; padding-left: 30px; cursor: pointer;">
+                    <span style="position: absolute; left: 0; font-size: 1.2em; color: #a0aec0;">☐</span>
+                    SEO keywords added to titles
+                </li>
+                <li onclick="toggleCheck(this)" style="padding: 8px 0; position: relative; padding-left: 30px; cursor: pointer;">
+                    <span style="position: absolute; left: 0; font-size: 1.2em; color: #a0aec0;">☐</span>
+                    Shipping rates configured
+                </li>
+                <li onclick="toggleCheck(this)" style="padding: 8px 0; position: relative; padding-left: 30px; cursor: pointer;">
+                    <span style="position: absolute; left: 0; font-size: 1.2em; color: #a0aec0;">☐</span>
+                    Payment method connected
+                </li>
+            </ul>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #666;">Click items as you complete them!</p>
+        </div>
+
+        <button onclick="completeStep(6)" id="step6-btn" style="background-color: #f56500; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">Shop Published! 🎉</button>
+    </div>
+
+    <!-- Troubleshooting Section -->
+    <div style="background-color: #fff5f0; border-radius: 10px; padding: 20px; margin: 30px 0;">
+        <h3>🔧 Common Speed Bumps & Fixes</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <thead>
+                <tr>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #f56500; color: white; font-weight: bold;">Problem</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #f56500; color: white; font-weight: bold;">Cause</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #f56500; color: white; font-weight: bold;">Fix</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Low search views</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Poor keywords</td>
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Low search views</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Poor keywords</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Use Etsy search bar suggestions</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Slow sales</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Weak photos</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Use natural light, mockups</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">High shipping complaints</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Rates too high</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Use Etsy shipping calculator</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Final Deliverable -->
+    <div style="background-color: #f0f8ff; border: 2px solid #4299e1; border-radius: 10px; padding: 25px; margin: 30px 0; text-align: center;">
+        <h3 style="color: #2b6cb0; margin-bottom: 15px;">🎯 Your Deliverable</h3>
+        <p><strong>Public Etsy shop with 3 optimized listings ready to generate sales.</strong></p>
+        <p style="margin-top: 15px;">Congratulations! Your Etsy shop is now live and optimized for search. You're ready to start making sales and building your online business!</p>
+    </div>
+</div>
+
+<script>
+var completedSteps = 0;
+var selectedKeywords = 0;
+var totalSteps = 6;
+
+function updateProgress() {
+    var progress = (completedSteps / totalSteps) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+}
+
+function completeStep(stepNumber) {
+    var stepSection = document.getElementById('step' + stepNumber);
+    var stepIndicator = document.getElementById('step' + stepNumber + '-indicator');
+    var stepBtn = document.getElementById('step' + stepNumber + '-btn');
+    
+    stepSection.style.borderColor = '#48bb78';
+    stepSection.style.backgroundColor = '#f0fff4';
+    stepIndicator.style.backgroundColor = '#f0fff4';
+    stepIndicator.style.color = '#38a169';
+    stepBtn.style.backgroundColor = '#48bb78';
+    stepBtn.disabled = true;
+    
+    completedSteps++;
+    updateProgress();
+    
+    if (stepNumber < totalSteps) {
+        var nextStep = stepNumber + 1;
+        var nextStepSection = document.getElementById('step' + nextStep);
+        var nextStepIndicator = document.getElementById('step' + nextStep + '-indicator');
+        
+        nextStepSection.style.borderColor = '#f56500';
+        nextStepSection.style.backgroundColor = '#fff5f0';
+        nextStepIndicator.style.backgroundColor = '#fff5f0';
+        nextStepIndicator.style.color = '#2d3748';
+        nextStepIndicator.style.border = '2px solid #f56500';
+    }
+}
+
+function checkShopName() {
+    var shopName = document.getElementById('shop-name').value.trim();
+    var success = document.getElementById('name-success');
+    
+    if (shopName.length >= 4 && shopName.length <= 20) {
+        success.style.display = 'block';
+        document.getElementById('step2-btn').disabled = false;
+        document.getElementById('step2-btn').style.backgroundColor = '#f56500';
+        document.getElementById('step2-btn').style.cursor = 'pointer';
+    }
+}
+
+function toggleKeyword(element) {
+    if (element.style.backgroundColor === 'rgb(245, 101, 0)') {
+        element.style.backgroundColor = '#e2e8f0';
+        element.style.color = '#333';
+        selectedKeywords--;
+    } else {
+        element.style.backgroundColor = '#f56500';
+        element.style.color = 'white';
+        selectedKeywords++;
+    }
+    
+    document.getElementById('selected-keywords').textContent = selectedKeywords;
+    updatePreview();
+    
+    var title = document.getElementById('listing-title').value;
+    var price = document.getElementById('listing-price').value;
+    if (title && price && selectedKeywords > 0) {
+        document.getElementById('step3-btn').disabled = false;
+        document.getElementById('step3-btn').style.backgroundColor = '#f56500';
+        document.getElementById('step3-btn').style.cursor = 'pointer';
+    }
+}
+
+function updatePreview() {
+    var title = document.getElementById('listing-title').value || 'Your Product Title Here';
+    var price = document.getElementById('listing-price').value || '0.00';
+    var selectedTags = document.querySelectorAll('[style*="rgb(245, 101, 0)"]');
+    
+    document.getElementById('preview-title').textContent = title;
+    document.getElementById('preview-price').textContent = ' + parseFloat(price).toFixed(2);
+    
+    var titleLength = title.length;
+    document.getElementById('title-count').textContent = titleLength + '/140 characters';
+    
+    var tagsContainer = document.getElementById('preview-tags');
+    tagsContainer.innerHTML = '';
+    
+    for (var i = 0; i < selectedTags.length; i++) {
+        if (selectedTags[i].onclick && selectedTags[i].textContent) {
+            var tagElement = document.createElement('span');
+            tagElement.style.display = 'inline-block';
+            tagElement.style.backgroundColor = '#e2e8f0';
+            tagElement.style.padding = '4px 8px';
+            tagElement.style.borderRadius = '12px';
+            tagElement.style.fontSize = '0.8em';
+            tagElement.style.margin = '2px';
+            tagElement.textContent = selectedTags[i].textContent;
+            tagsContainer.appendChild(tagElement);
+        }
+    }
+    
+    var titleInput = document.getElementById('listing-title').value;
+    var priceInput = document.getElementById('listing-price').value;
+    if (titleInput && priceInput && selectedKeywords > 0) {
+        document.getElementById('step3-btn').disabled = false;
+        document.getElementById('step3-btn').style.backgroundColor = '#f56500';
+        document.getElementById('step3-btn').style.cursor = 'pointer';
+    }
+}
+
+function calculateFees() {
+    var itemPrice = parseFloat(document.getElementById('item-price').value) || 0;
+    var shippingFee = parseFloat(document.getElementById('shipping-fee').value) || 0;
+    
+    var listingFee = 0.20;
+    var transactionFee = (itemPrice + shippingFee) * 0.065;
+    var paymentFee = (itemPrice + shippingFee) * 0.03 + 0.25;
+    
+    var totalFees = listingFee + transactionFee + paymentFee;
+    var youKeep = (itemPrice + shippingFee) - totalFees;
+    
+    document.getElementById('total-fees').textContent = ' + totalFees.toFixed(2);
+    document.getElementById('you-keep').textContent = ' + Math.max(0, youKeep).toFixed(2);
+}
+
+function toggleCheck(item) {
+    var checkbox = item.querySelector('span');
+    if (checkbox.textContent === '☐') {
+        checkbox.textContent = '✅';
+    } else {
+        checkbox.textContent = '☐';
+    }
+}
+</script>
+
+</body>
+</html>

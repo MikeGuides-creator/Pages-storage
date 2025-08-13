@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Declutter Your Inbox & Set an Email System</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background-color: #f5f7fa; margin: 0; padding: 0;">
+
+<div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+    <!-- Header -->
+    <div style="background-color: #3182ce; color: white; text-align: center; padding: 40px 20px; border-radius: 15px; margin-bottom: 30px;">
+        <h1 style="font-size: 2.5em; margin-bottom: 10px;">📧 Email Management System</h1>
+        <p style="font-size: 1.2em; opacity: 0.9;">Transform your inbox chaos into organized productivity</p>
+    </div>
+
+    <!-- Progress Section -->
+    <div style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <h3>Your Progress</h3>
+        <div style="background-color: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+            <div id="progressFill" style="height: 100%; background-color: #3182ce; width: 0%; transition: width 0.5s ease; border-radius: 4px;"></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 15px;">
+            <div id="step1-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #ebf8ff; color: #2d3748; border: 2px solid #3182ce;">Triage Inbox</div>
+            <div id="step2-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Create Folders</div>
+            <div id="step3-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Set Rules</div>
+            <div id="step4-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Batch Process</div>
+            <div id="step5-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Weekly Review</div>
+            <div id="step6-indicator" style="text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9em; font-weight: bold; background-color: #f7fafc; color: #718096;">Maintain</div>
+        </div>
+    </div>
+
+    <!-- Prerequisites -->
+    <div style="background-color: white; border-radius: 10px; padding: 30px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <div style="background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 20px; border-radius: 0 8px 8px 0; margin-bottom: 30px;">
+            <h3>📋 Prerequisites</h3>
+            <ul>
+                <li>Email account access (Gmail, Outlook, etc.)</li>
+                <li>Willingness to delete/archive old emails</li>
+                <li>15-30 minutes for initial setup</li>
+                <li>Commitment to daily maintenance</li>
+            </ul>
+            <p><strong>Promise:</strong> By the end of this guide, you'll have an inbox with under 20 active messages and an automated system that stays organized!</p>
+        </div>
+    </div>
+
+    <!-- Step 1: Triage Inbox -->
+    <div id="step1" style="border: 2px solid #3182ce; border-radius: 10px; padding: 25px; margin: 20px 0; background-color: #ebf8ff;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #3182ce; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">1</div>
+            <h2>Triage Inbox</h2>
+        </div>
+        
+        <p>Start by sorting and bulk-deleting emails. Focus on clearing the clutter first.</p>
+        
+        <div style="background-color: white; border: 2px solid #bee3f8; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h4>📮 Inbox Simulator</h4>
+            <p>Practice triaging emails by moving them to appropriate categories:</p>
+            
+            <div id="inbox-container" style="background-color: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; min-height: 200px; padding: 15px; margin: 15px 0;">
+                <h5 style="margin-bottom: 15px; color: #2d3748;">Inbox (47 emails)</h5>
+                <div id="email-list">
+                    <div class="email-item" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin: 8px 0; cursor: move; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Newsletter: Daily Tech Updates</strong><br>
+                            <small style="color: #666;">marketing@techblog.com - 2 days ago</small>
+                        </div>
+                        <div>
+                            <button onclick="deleteEmail(this)" style="background-color: #fed7d7; color: #c53030; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Delete</button>
+                            <button onclick="archiveEmail(this)" style="background-color: #e6fffa; color: #319795; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Archive</button>
+                        </div>
+                    </div>
+                    
+                    <div class="email-item" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin: 8px 0; cursor: move; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Project Update from Sarah</strong><br>
+                            <small style="color: #666;">sarah@company.com - 1 hour ago</small>
+                        </div>
+                        <div>
+                            <button onclick="deleteEmail(this)" style="background-color: #fed7d7; color: #c53030; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Delete</button>
+                            <button onclick="archiveEmail(this)" style="background-color: #e6fffa; color: #319795; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Archive</button>
+                        </div>
+                    </div>
+                    
+                    <div class="email-item" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin: 8px 0; cursor: move; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Receipt: Amazon Order #123</strong><br>
+                            <small style="color: #666;">auto-confirm@amazon.com - Yesterday</small>
+                        </div>
+                        <div>
+                            <button onclick="deleteEmail(this)" style="background-color: #fed7d7; color: #c53030; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Delete</button>
+                            <button onclick="archiveEmail(this)" style="background-color: #e6fffa; color: #319795; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Archive</button>
+                        </div>
+                    </div>
+                    
+                    <div class="email-item" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin: 8px 0; cursor: move; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Meeting Request: Q4 Planning</strong><br>
+                            <small style="color: #666;">manager@company.com - 3 hours ago</small>
+                        </div>
+                        <div>
+                            <button onclick="deleteEmail(this)" style="background-color: #fed7d7; color: #c53030; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Delete</button>
+                            <button onclick="archiveEmail(this)" style="background-color: #e6fffa; color: #319795; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Archive</button>
+                        </div>
+                    </div>
+                    
+                    <div class="email-item" draggable="true" ondragstart="drag(event)" style="background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin: 8px 0; cursor: move; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Promotional: 50% Off Sale!</strong><br>
+                            <small style="color: #666;">deals@retailstore.com - 1 day ago</small>
+                        </div>
+                        <div>
+                            <button onclick="deleteEmail(this)" style="background-color: #fed7d7; color: #c53030; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Delete</button>
+                            <button onclick="archiveEmail(this)" style="background-color: #e6fffa; color: #319795; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Archive</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                    <strong>Quick Triage Tips:</strong>
+                    <ul style="margin-top: 5px;">
+                        <li><strong>Delete:</strong> Spam, old promotions, outdated newsletters</li>
+                        <li><strong>Archive:</strong> Receipts, confirmations, completed tasks</li>
+                        <li><strong>Keep:</strong> Current projects, pending actions, important contacts</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                <div style="background-color: #fed7d7; padding: 15px; border-radius: 8px; text-align: center;">
+                    <h5 style="color: #c53030; margin-bottom: 10px;">🗑️ Deleted</h5>
+                    <div id="deleted-count" style="font-size: 2em; font-weight: bold; color: #c53030;">0</div>
+                </div>
+                <div style="background-color: #e6fffa; padding: 15px; border-radius: 8px; text-align: center;">
+                    <h5 style="color: #319795; margin-bottom: 10px;">📁 Archived</h5>
+                    <div id="archived-count" style="font-size: 2em; font-weight: bold; color: #319795;">0</div>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="completeStep(1)" id="step1-btn" style="background-color: #3182ce; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">Triage Complete ✅</button>
+    </div>
+
+    <!-- Step 2: Create Folders -->
+    <div id="step2" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #3182ce; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">2</div>
+            <h2>Create Folders/Labels</h2>
+        </div>
+        
+        <p>Set up a simple folder system using the proven Action-Waiting-Reference-Archive method.</p>
+        
+        <div style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+            <h4>📁 Folder Setup Simulator</h4>
+            <p>Create your core email folders by clicking the buttons below:</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                <div id="action-folder" onclick="createFolder('action')" style="background-color: white; border: 2px dashed #cbd5e0; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s ease;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">⚡</div>
+                    <h5>Action</h5>
+                    <p style="font-size: 0.9em; color: #666;">Emails requiring action</p>
+                </div>
+                
+                <div id="waiting-folder" onclick="createFolder('waiting')" style="background-color: white; border: 2px dashed #cbd5e0; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s ease;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">⏳</div>
+                    <h5>Waiting</h5>
+                    <p style="font-size: 0.9em; color: #666;">Waiting for responses</p>
+                </div>
+                
+                <div id="reference-folder" onclick="createFolder('reference')" style="background-color: white; border: 2px dashed #cbd5e0; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s ease;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">📚</div>
+                    <h5>Reference</h5>
+                    <p style="font-size: 0.9em; color: #666;">Info to keep handy</p>
+                </div>
+                
+                <div id="archive-folder" onclick="createFolder('archive')" style="background-color: white; border: 2px dashed #cbd5e0; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s ease;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">📦</div>
+                    <h5>Archive</h5>
+                    <p style="font-size: 0.9em; color: #666;">Completed items</p>
+                </div>
+            </div>
+            
+            <div id="folder-status" style="background-color: #e6fffa; border: 1px solid #4fd1c7; border-radius: 8px; padding: 15px; margin-top: 20px; display: none;">
+                <h5 style="color: #065f46;">✅ Folder System Created!</h5>
+                <p style="color: #065f46; margin: 0;">You've set up the core folders. This simple system will handle 90% of your email organization needs.</p>
+            </div>
+        </div>
+
+        <button onclick="completeStep(2)" id="step2-btn" disabled style="background-color: #a0aec0; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: not-allowed; font-weight: bold; margin: 10px 5px;">Folders Created ✅</button>
+    </div>
+
+    <!-- Step 3: Set Rules/Filters -->
+    <div id="step3" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #3182ce; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">3</div>
+            <h2>Set Rules/Filters</h2>
+        </div>
+        
+        <p>Automate email sorting with smart rules and filters.</p>
+        
+        <div style="background-color: #fffbf0; border: 2px solid #f6d55c; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h4>🤖 Filter Builder</h4>
+            <p>Create automated rules to sort incoming emails:</p>
+            
+            <div style="background-color: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 15px 0;">
+                <h5>Rule Creator</h5>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin: 15px 0;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">If email contains:</label>
+                        <select id="filter-condition" style="width: 100%; padding: 8px; border: 1px solid #e2e8f0; border-radius: 4px;">
+                            <option value="">Select condition</option>
+                            <option value="sender">From specific sender</option>
+                            <option value="subject">Subject contains</option>
+                            <option value="body">Body contains</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Value:</label>
+                        <input type="text" id="filter-value" placeholder="e.g., newsletter, receipts" style="width: 100%; padding: 8px; border: 1px solid #e2e8f0; border-radius: 4px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Then:</label>
+                        <select id="filter-action" style="width: 100%; padding: 8px; border: 1px solid #e2e8f0; border-radius: 4px;">
+                            <option value="">Select action</option>
+                            <option value="archive">Move to Archive</option>
+                            <option value="folder">Move to Folder</option>
+                            <option value="label">Add Label</option>
+                            <option value="delete">Delete</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="createFilter()" style="background-color: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Create Rule</button>
+            </div>
+            
+            <div id="active-filters" style="margin-top: 20px;">
+                <h5>Active Filters:</h5>
+                <div id="filter-list" style="background-color: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; min-height: 60px;">
+                    <p style="color: #666; text-align: center; margin: 0;">No filters created yet</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                <strong>Common Filter Ideas:</strong>
+                <ul style="margin-top: 5px;">
+                    <li>Newsletters → Archive automatically</li>
+                    <li>Receipts → Reference folder</li>
+                    <li>Social media notifications → Delete</li>
+                    <li>From boss → Keep in inbox</li>
+                </ul>
+            </div>
+        </div>
+
+        <button onclick="completeStep(3)" id="step3-btn" style="background-color: #3182ce; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">Filters Set ✅</button>
+    </div>
+
+    <!-- Step 4: Process in Batches -->
+    <div id="step4" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #3182ce; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">4</div>
+            <h2>Process in Batches</h2>
+        </div>
+        
+        <p>Set specific times for email processing instead of constant checking.</p>
+        
+        <div style="background-color: #f0fff4; border: 2px solid #9ae6b4; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h4>⏰ Batch Processing Scheduler</h4>
+            <p>Plan your email processing times:</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                <div onclick="selectTime('morning')" id="morning-slot" style="background-color: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">🌅</div>
+                    <h5>Morning</h5>
+                    <p style="font-size: 0.9em; color: #666;">9:00 AM</p>
+                </div>
+                
+                <div onclick="selectTime('lunch')" id="lunch-slot" style="background-color: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">🍽️</div>
+                    <h5>Lunch</h5>
+                    <p style="font-size: 0.9em; color: #666;">12:30 PM</p>
+                </div>
+                
+                <div onclick="selectTime('afternoon')" id="afternoon-slot" style="background-color: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">☀️</div>
+                    <h5>Afternoon</h5>
+                    <p style="font-size: 0.9em; color: #666;">3:00 PM</p>
+                </div>
+                
+                <div onclick="selectTime('evening')" id="evening-slot" style="background-color: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer;">
+                    <div style="font-size: 1.5em; margin-bottom: 5px;">🌆</div>
+                    <h5>Evening</h5>
+                    <p style="font-size: 0.9em; color: #666;">5:30 PM</p>
+                </div>
+            </div>
+            
+            <div id="schedule-result" style="background-color: #e6fffa; border: 1px solid #4fd1c7; border-radius: 8px; padding: 15px; margin-top: 15px; display: none;">
+                <h5 style="color: #065f46;">📅 Your Email Schedule</h5>
+                <div id="selected-times" style="color: #065f46;"></div>
+                <p style="color: #065f46; margin-top: 10px; font-size: 0.9em;"><strong>Tip:</strong> Turn off email notifications and stick to these scheduled times only!</p>
+            </div>
+            
+            <div style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                <strong>Batch Processing Benefits:</strong>
+                <ul style="margin-top: 5px;">
+                    <li>Reduces constant interruptions</li>
+                    <li>Improves focus on other tasks</li>
+                    <li>More efficient email handling</li>
+                    <li>Lower stress and overwhelm</li>
+                </ul>
+            </div>
+        </div>
+
+        <button onclick="completeStep(4)" id="step4-btn" style="background-color: #3182ce; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">Schedule Set ✅</button>
+    </div>
+
+    <!-- Step 5: Weekly Review -->
+    <div id="step5" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #3182ce; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">5</div>
+            <h2>Weekly Review</h2>
+        </div>
+        
+        <p>Establish a weekly maintenance routine to keep your system working.</p>
+        
+        <div style="background-color: #f7fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+            <h4>📋 Weekly Review Checklist</h4>
+            <p>Complete these tasks every Friday to maintain your system:</p>
+            
+            <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                <li onclick="toggleCheck(this)" style="padding: 10px; margin: 8px 0; background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+                    <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                    <div>
+                        <strong>Review Waiting folder</strong><br>
+                        <small style="color: #666;">Follow up on overdue responses</small>
+                    </div>
+                </li>
+                
+                <li onclick="toggleCheck(this)" style="padding: 10px; margin: 8px 0; background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+                    <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                    <div>
+                        <strong>Update email filters</strong><br>
+                        <small style="color: #666;">Add new rules based on this week's patterns</small>
+                    </div>
+                </li>
+                
+                <li onclick="toggleCheck(this)" style="padding: 10px; margin: 8px 0; background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+                    <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                    <div>
+                        <strong>Archive completed items</strong><br>
+                        <small style="color: #666;">Move resolved emails from Reference to Archive</small>
+                    </div>
+                </li>
+                
+                <li onclick="toggleCheck(this)" style="padding: 10px; margin: 8px 0; background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+                    <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                    <div>
+                        <strong>Unsubscribe from unwanted lists</strong><br>
+                        <small style="color: #666;">Clean up subscriptions you no longer want</small>
+                    </div>
+                </li>
+                
+                <li onclick="toggleCheck(this)" style="padding: 10px; margin: 8px 0; background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+                    <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                    <div>
+                        <strong>Review inbox zero goal</strong><br>
+                        <small style="color: #666;">Aim for under 20 emails in main inbox</small>
+                    </div>
+                </li>
+            </ul>
+            
+            <div id="review-progress" style="background-color: #e6fffa; border: 1px solid #4fd1c7; border-radius: 8px; padding: 15px; margin-top: 20px;">
+                <h5 style="color: #065f46;">📊 Review Progress</h5>
+                <div style="color: #065f46;">
+                    Completed: <span id="checked-count">0</span>/6 tasks
+                    <div style="background-color: #065f46; height: 6px; border-radius: 3px; margin: 8px 0;">
+                        <div id="review-progress-bar" style="background-color: #4fd1c7; height: 100%; width: 0%; border-radius: 3px; transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="completeStep(5)" id="step5-btn" style="background-color: #3182ce; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">Review System Set ✅</button>
+    </div>
+
+    <!-- Step 6: Maintain -->
+    <div id="step6" style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 25px; margin: 20px 0;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <div style="background-color: #3182ce; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">6</div>
+            <h2>Maintain</h2>
+        </div>
+        
+        <p>Develop habits to keep your email system running smoothly long-term.</p>
+        
+        <div style="background-color: #fffbf0; border: 2px solid #f6d55c; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h4>🎯 Maintenance Habits</h4>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0;">
+                <div style="background-color: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
+                    <h5 style="color: #744210; margin-bottom: 10px;">📬 Daily Habits</h5>
+                    <ul style="color: #744210; font-size: 0.9em;">
+                        <li>Process emails only during scheduled times</li>
+                        <li>Apply 2-minute rule: do it, delegate it, or defer it</li>
+                        <li>Use secondary email for signups</li>
+                        <li>Unsubscribe immediately from unwanted emails</li>
+                    </ul>
+                </div>
+                
+                <div style="background-color: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
+                    <h5 style="color: #744210; margin-bottom: 10px;">🛡️ Prevention Tips</h5>
+                    <ul style="color: #744210; font-size: 0.9em;">
+                        <li>Turn off non-essential notifications</li>
+                        <li>Use a separate email for online shopping</li>
+                        <li>Set up auto-responders when needed</li>
+                        <li>Regularly review and update filters</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="background-color: #fed7d7; border: 1px solid #feb2b2; border-radius: 8px; padding: 15px; margin-top: 20px;">
+                <h5 style="color: #c53030;">⚠️ Warning Signs Your System Needs Attention</h5>
+                <ul style="color: #c53030; font-size: 0.9em; margin-top: 5px;">
+                    <li>Inbox consistently above 20 emails</li>
+                    <li>Missing important messages</li>
+                    <li>Feeling overwhelmed by email volume</li>
+                    <li>Spending more than 30 minutes per session</li>
+                </ul>
+            </div>
+        </div>
+
+        <button onclick="completeStep(6)" id="step6-btn" style="background-color: #3182ce; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 5px;">System Complete! 🎉</button>
+    </div>
+
+    <!-- Troubleshooting Section -->
+    <div style="background-color: #ebf8ff; border-radius: 10px; padding: 20px; margin: 30px 0;">
+        <h3>🔧 Common Speed Bumps & Fixes</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <thead>
+                <tr>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #3182ce; color: white; font-weight: bold;">Problem</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #3182ce; color: white; font-weight: bold;">Cause</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; background-color: #3182ce; color: white; font-weight: bold;">Fix</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Inbox fills again</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">No daily habit</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Schedule "email blocks"</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Too many folders</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Overcomplication</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Keep to 3-5 core folders</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Filters miss emails</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Incorrect settings</td>
+                    <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">Review filter logic weekly</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Final Deliverable -->
+    <div style="background-color: #f0f8ff; border: 2px solid #4299e1; border-radius: 10px; padding: 25px; margin: 30px 0; text-align: center;">
+        <h3 style="color: #2b6cb0; margin-bottom: 15px;">🎯 Your Deliverable</h3>
+        <p><strong>Inbox with under 20 active messages and automated sorting system.</strong></p>
+        <p style="margin-top: 15px;">Congratulations! You now have a sustainable email management system that will save you hours each week and reduce email stress significantly!</p>
+    </div>
+</div>
+
+<script>
+var completedSteps = 0;
+var totalSteps = 6;
+var deletedCount = 0;
+var archivedCount = 0;
+var foldersCreated = 0;
+var filtersCreated = 0;
+var selectedTimes = [];
+var checkedTasks = 0;
+
+function updateProgress() {
+    var progress = (completedSteps / totalSteps) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+}
+
+function completeStep(stepNumber) {
+    var stepSection = document.getElementById('step' + stepNumber);
+    var stepIndicator = document.getElementById('step' + stepNumber + '-indicator');
+    var stepBtn = document.getElementById('step' + stepNumber + '-btn');
+    
+    stepSection.style.borderColor = '#48bb78';
+    stepSection.style.backgroundColor = '#f0fff4';
+    stepIndicator.style.backgroundColor = '#f0fff4';
+    stepIndicator.style.color = '#38a169';
+    stepBtn.style.backgroundColor = '#48bb78';
+    stepBtn.disabled = true;
+    
+    completedSteps++;
+    updateProgress();
+    
+    if (stepNumber < totalSteps) {
+        var nextStep = stepNumber + 1;
+        var nextStepSection = document.getElementById('step' + nextStep);
+        var nextStepIndicator = document.getElementById('step' + nextStep + '-indicator');
+        
+        nextStepSection.style.borderColor = '#3182ce';
+        nextStepSection.style.backgroundColor = '#ebf8ff';
+        nextStepIndicator.style.backgroundColor = '#ebf8ff';
+        nextStepIndicator.style.color = '#2d3748';
+        nextStepIndicator.style.border = '2px solid #3182ce';
+    }
+}
+
+function deleteEmail(button) {
+    var emailItem = button.parentElement.parentElement;
+    emailItem.style.display = 'none';
+    deletedCount++;
+    document.getElementById('deleted-count').textContent = deletedCount;
+    updateInboxCount();
+}
+
+function archiveEmail(button) {
+    var emailItem = button.parentElement.parentElement;
+    emailItem.style.display = 'none';
+    archivedCount++;
+    document.getElementById('archived-count').textContent = archivedCount;
+    updateInboxCount();
+}
+
+function updateInboxCount() {
+    var remaining = 5 - deletedCount - archivedCount;
+    if (remaining <= 2) {
+        document.getElementById('step1-btn').disabled = false;
+        document.getElementById('step1-btn').style.backgroundColor = '#3182ce';
+        document.getElementById('step1-btn').style.cursor = 'pointer';
+    }
+}
+
+function createFolder(folderType) {
+    var folder = document.getElementById(folderType + '-folder');
+    folder.style.borderColor = '#48bb78';
+    folder.style.borderStyle = 'solid';
+    folder.style.backgroundColor = '#f0fff4';
+    folder.style.cursor = 'default';
+    folder.onclick = null;
+    
+    foldersCreated++;
+    if (foldersCreated >= 4) {
+        document.getElementById('folder-status').style.display = 'block';
+        document.getElementById('step2-btn').disabled = false;
+        document.getElementById('step2-btn').style.backgroundColor = '#3182ce';
+        document.getElementById('step2-btn').style.cursor = 'pointer';
+    }
+}
+
+function createFilter() {
+    var condition = document.getElementById('filter-condition').value;
+    var value = document.getElementById('filter-value').value;
+    var action = document.getElementById('filter-action').value;
+    
+    if (condition && value && action) {
+        var filterList = document.getElementById('filter-list');
+        if (filtersCreated === 0) {
+            filterList.innerHTML = '';
+        }
+        
+        var filterDiv = document.createElement('div');
+        filterDiv.style.backgroundColor = 'white';
+        filterDiv.style.border = '1px solid #e2e8f0';
+        filterDiv.style.borderRadius = '6px';
+        filterDiv.style.padding = '10px';
+        filterDiv.style.margin = '5px 0';
+        filterDiv.innerHTML = '<strong>If ' + condition + ' contains "' + value + '"</strong> → ' + action;
+        
+        filterList.appendChild(filterDiv);
+        filtersCreated++;
+        
+        document.getElementById('filter-condition').value = '';
+        document.getElementById('filter-value').value = '';
+        document.getElementById('filter-action').value = '';
+    }
+}
+
+function selectTime(timeSlot) {
+    var slot = document.getElementById(timeSlot + '-slot');
+    
+    if (selectedTimes.indexOf(timeSlot) === -1) {
+        selectedTimes.push(timeSlot);
+        slot.style.borderColor = '#3182ce';
+        slot.style.backgroundColor = '#ebf8ff';
+    } else {
+        selectedTimes = selectedTimes.filter(function(time) { return time !== timeSlot; });
+        slot.style.borderColor = '#e2e8f0';
+        slot.style.backgroundColor = 'white';
+    }
+    
+    if (selectedTimes.length > 0) {
+        document.getElementById('schedule-result').style.display = 'block';
+        var timesText = selectedTimes.map(function(time) {
+            var timeMap = {
+                'morning': '9:00 AM',
+                'lunch': '12:30 PM', 
+                'afternoon': '3:00 PM',
+                'evening': '5:30 PM'
+            };
+            return timeMap[time];
+        }).join(', ');
+        document.getElementById('selected-times').textContent = 'You will check email at: ' + timesText;
+    } else {
+        document.getElementById('schedule-result').style.display = 'none';
+    }
+}
+
+function toggleCheck(item) {
+    var checkbox = item.querySelector('span');
+    if (checkbox.textContent === '☐') {
+        checkbox.textContent = '✅';
+        item.style.backgroundColor = '#f0fff4';
+        checkedTasks++;
+    } else {
+        checkbox.textContent = '☐';
+        item.style.backgroundColor = 'white';
+        checkedTasks--;
+    }
+    
+    document.getElementById('checked-count').textContent = checkedTasks;
+    var progress = (checkedTasks / 6) * 100;
+    document.getElementById('review-progress-bar').style.width = progress + '%';
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+</script>
+
+</body>
+</html></span>
+                    <div>
+                        <strong>Clear Action folder</strong><br>
+                        <small style="color: #666;">Complete pending tasks or reschedule</small>
+                    </div>
+                </li>
+                
+                <li onclick="toggleCheck(this)" style="padding: 10px; margin: 8px 0; background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+                    <span style="margin-right: 15px; font-size: 1.2em;">☐</span>
+                    <div>
+                        <strong>Review Waiting folder</strong><br>
+                        <small style="color: #666;">Follow up on overdue responses</small>
+                    </div>
+                </li>
+                
+                <li onclick="toggleCheck(this)" style="padding: 10px; margin: 8px 0; background-color: white; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+                    <span style="margin-right: 15px; font-size: 1.2em;">☐
