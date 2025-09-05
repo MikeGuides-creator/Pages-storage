@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang="en"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Blog Content Generator</title><script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script>
+
+        tailwind.config = {
+
+            theme: { extend: { colors: { primary: '#5D5CDE' } } },
+
+            darkMode: 'class'
+
+        }
+
+    </script><style>/* markdown styling */
+
+        .markdown-content h1 { @apply text-3xl font-bold mb-4 mt-6; }
+
+        .markdown-content h2 { @apply text-2xl font-semibold mb-3 mt-5; }
+
+        .markdown-content h3 { @apply text-xl font-semibold mb-2 mt-4; }
+
+        .markdown-content p { @apply mb-3 leading-relaxed; }
+
+        .markdown-content ul { @apply list-disc ml-6 mb-3; }
+
+        .markdown-content ol { @apply list-decimal ml-6 mb-3; }
+
+        .markdown-content li { @apply mb-1; }
+
+        .markdown-content blockquote { @apply border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic mb-3; }
+
+        .markdown-content code { @apply bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm; }
+
+        .markdown-content pre { @apply bg-gray-100 dark:bg-gray-800 p-4 rounded mb-3 overflow-x-auto; }
+
+        .markdown-content strong { @apply font-semibold; }
+
+        .markdown-content em { @apply italic; }
+
+    </style><script src="https://puc.poecdn.net/authenticated_preview_page/syncedState.bd4eeeb8e8e02052ee92.js"></script></head>
+
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+
+        <header class="text-center mb-8">
+
+            <h1 class="text-4xl font-bold text-primary mb-2">Blog Content Generator</h1>
+
+            <p class="text-gray-600 dark:text-gray-400">Create engaging blog posts with AI-generated content and images</p>
+
+        </header>
+
+
+        <!-- Form -->
+
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-8">
+
+            <h2 class="text-2xl font-semibold mb-6">Generate New Content</h2>
+
+            <form id="contentForm" class="space-y-6">
+
+                <div class="grid md:grid-cols-2 gap-6">
+
+                    <div><label for="topic" class="block text-sm font-medium mb-2">Blog Topic</label>
+
+                        <input type="text" id="topic" name="topic" class="w-full px-4 py-3 border rounded-lg" placeholder="e.g., Sustainable Living Tips" required></div>
+
+                    <div><label for="style" class="block text-sm font-medium mb-2">Writing Style</label>
+
+                        <select id="style" name="style" class="w-full px-4 py-3 border rounded-lg">
+
+                            <option value="conversational">Conversational & Friendly</option>
+
+                            <option value="professional">Professional & Authoritative</option>
+
+                            <option value="casual">Casual & Personal</option>
+
+                            <option value="educational">Educational & Informative</option>
+
+                            <option value="persuasive">Persuasive & Engaging</option>
+
+                            <option value="storytelling">Storytelling & Narrative</option>
+
+                        </select></div>
+
+                </div>
+
+                <div><label for="audience" class="block text-sm font-medium mb-2">Target Audience</label>
+
+                    <input type="text" id="audience" name="audience" class="w-full px-4 py-3 border rounded-lg" placeholder="e.g., Young professionals, Parents"></div>
+
+                <div><label for="keywords" class="block text-sm font-medium mb-2">SEO Keywords</label>
+
+                    <input type="text" id="keywords" name="keywords" class="w-full px-4 py-3 border rounded-lg" placeholder="Auto-suggested or enter manually"></div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+
+                    <div><label for="length" class="block text-sm font-medium mb-2">Content Length</label>
+
+                        <select id="length" name="length" class="w-full px-4 py-3 border rounded-lg">
+
+                            <option value="short">Short (300-500 words)</option>
+
+                            <option value="medium" selected>Medium (500-800 words)</option>
+
+                            <option value="long">Long (800-1200 words)</option>
+
+                        </select></div>
+
+                    <div><label for="imageCount" class="block text-sm font-medium mb-2">Number of Images</label>
+
+                        <select id="imageCount" name="imageCount" class="w-full px-4 py-3 border rounded-lg">
+
+                            <option value="0">No Images</option>
+
+                            <option value="1" selected>1 Featured Image</option>
+
+                            <option value="2">2 Images</option>
+
+                            <option value="3">3 Images</option>
+
+                        </select></div>
+
+                </div>
+
+                <div class="flex items-center space-x-2">
+
+                    <input type="checkbox" id="includeOutline" name="includeOutline" class="w-4 h-4"> <label for="includeOutline">Include outline</label>
+
+                </div>
+
+                <button type="submit" id="generateBtn" class="w-full bg-primary text-white py-3 px-6 rounded-lg">Generate Blog Content</button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Loading -->
+
+        <div id="loadingState" class="hidden p-6 mb-8 border rounded-lg">
+
+            <div class="flex items-center space-x-3">
+
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+
+                <div><h3 class="font-semibold">Generating Content</h3><p id="loadingText">Preparing...</p></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Generated -->
+
+        <div id="generatedContent" class="hidden">
+
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 mb-6">
+
+                <div class="flex justify-between mb-4">
+
+                    <h2 class="text-2xl font-semibold">Generated Blog Post</h2>
+
+                    <div class="flex space-x-2">
+
+                        <button id="copyContentBtn" class="px-4 py-2 bg-gray-100 rounded-lg">Copy</button>
+
+                        <button id="exportBtn" class="px-4 py-2 bg-primary text-white rounded-lg">Export HTML</button>
+
+                        <button id="exportPdfBtn" class="px-4 py-2 bg-red-500 text-white rounded-lg">Export PDF</button>
+
+                        <button id="exportMdBtn" class="px-4 py-2 bg-green-500 text-white rounded-lg">Export MD</button>
+
+                    </div>
+
+                </div>
+
+                <div id="blogContent" class="markdown-content prose max-w-none"></div>
+
+            </div>
+
+            <div id="imagesSection" class="hidden bg-white rounded-lg p-6"><h3 class="text-xl font-semibold mb-4">Generated Images</h3><div id="imageGrid" class="grid gap-4"></div></div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        let generatedImages = [];
+
+
+        // keyword suggestion handler
+
+        window.Poe.registerHandler("keyword-handler", (result, context) => {
+
+            const msg = result.responses[0];
+
+            if (msg.status === "complete") {
+
+                document.getElementById("keywords").value = msg.content.replace(/\n/g, ", ");
+
+            }
+
+        });
+
+
+        // content handler
+
+        window.Poe.registerHandler("content-handler", (result, context) => {
+
+            const msg = result.responses[0];
+
+            const contentDiv = document.getElementById('blogContent');
+
+            if (msg.status === "complete") {
+
+                contentDiv.innerHTML = marked.parse(msg.content);
+
+                document.getElementById('generatedContent').classList.remove('hidden');
+
+            }
+
+        });
+
+
+        document.getElementById('contentForm').addEventListener('submit', async (e) => {
+
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+
+            const topic = formData.get('topic');
+
+            const style = formData.get('style');
+
+            const audience = formData.get('audience');
+
+            const length = formData.get('length');
+
+            const keywords = formData.get('keywords');
+
+            const includeOutline = formData.get('includeOutline') === 'on';
+
+
+            showLoading();
+
+
+            // request keywords if empty
+
+            if (!keywords) {
+
+                await window.Poe.sendUserMessage(`@Claude-Sonnet-4 Suggest 5 SEO keywords and 3 long-tail keyword phrases for the topic: "${topic}". List only.`, {
+
+                    handler: "keyword-handler", stream: false, openChat: false
+
+                });
+
+            }
+
+
+            let prompt = `@Claude-Sonnet-4 Write a blog post about "${topic}". Style: ${style}. Audience: ${audience||'general audience'}. Length: ${length}. ${includeOutline?'Include outline headings.':''}`;
+
+
+            await window.Poe.sendUserMessage(prompt, { handler: "content-handler", stream: true, openChat: false });
+
+        });
+
+
+        // export markdown
+
+        document.getElementById('exportMdBtn').addEventListener('click', () => {
+
+            const content = document.getElementById('blogContent').innerText;
+
+            const blob = new Blob([content], { type: 'text/markdown' });
+
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+
+            a.href = url; a.download = 'blog-post.md'; a.click();
+
+            URL.revokeObjectURL(url);
+
+        });
+
+
+        // export pdf
+
+        document.getElementById('exportPdfBtn').addEventListener('click', () => {
+
+            const { jsPDF } = window.jspdf;
+
+            const doc = new jsPDF();
+
+            doc.text(document.getElementById('blogContent').innerText, 10, 10);
+
+            doc.save('blog-post.pdf');
+
+        });
+
+
+        // export html
+
+        document.getElementById('exportBtn').addEventListener('click', () => {
+
+            const content = document.getElementById('blogContent').innerHTML;
+
+            const blob = new Blob([`<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Blog Post</title></head><body>${content}</body></html>`], { type: 'text/html' });
+
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+
+            a.href = url; a.download = 'blog-post.html'; a.click();
+
+            URL.revokeObjectURL(url);
+
+        });
+
+
+        function showLoading(){ document.getElementById('loadingState').classList.remove('hidden'); }
+
+    </script>
+
+</body></html>
