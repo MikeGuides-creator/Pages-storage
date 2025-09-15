@@ -1,1 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+(function(){
+  function setStatus(msg){
+    var f = function(){
+      try{
+        var el = document.getElementById('jsReady');
+        if (el) el.textContent = msg;
+      }catch(_){}
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', f);
+    } else { f(); }
+  }
+  // Early heartbeat: if you see 'JS: init…' the page script is running.
+  setStatus('JS: init…');
+  // Error hooks
+  window.addEventListener('error', function(e){
+    setStatus('JS: error');
+    try{ console.error('[VAS][error]', e.message, e.error); }catch(_){}
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    setStatus('JS: error');
+    try{ console.error('[VAS][unhandled]', e.reason); }catch(_){}
+  });
+  try{ console.log('[VAS] early diagnostics ready'); }catch(_){}
+})();
+</script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Visual AI Studio – EPIC v1.2.1</title>
+  <meta name="description" content="Plan, generate, assemble, and export your first AI-driven video—end to end in the browser. Now with pacing tools, beat captions, safe-area guides, watermark, and experimental MP4."/>
+  <meta name="theme-color" content="#7c3aed">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --primary:#7c3aed; --primary-600:#6d28d9; --accent:#10b981; --bg:#0b1220; --card:#0f172a;
+      --text:#e5e7eb; --muted:#9aa3b2; --border:#1f2937; --radius:18px; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(1200px 800px at 20% -10%, #1f2937 0%, transparent 60%), linear-gradient(180deg,#0b1220,#0b1220 60%,#0a0f1a);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55}
+    h1,h2,h3{font-family:Poppins,Inter,sans-serif}
+    a{color:#a78bfa}
+    .header{position:sticky;top:0;z-index:40;background:rgba(11,18,32,.75);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+    .nav{max-width:1200px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:10px;align-items:center;color:#c4b5fd;font-weight:800}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#111827;color:#e5e7eb;font-weight:600;cursor:pointer}
+    .btn:hover{border-color:#334155}
+    .btn-primary{background:var(--primary);border-color:var(--primary);color:white}
+    .btn-danger{background:#7f1d1d;border-color:#991b1b}
+    .wrap{max-width:1200px;margin:0 auto;padding:26px 20px}
+    .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;background:linear-gradient(135deg, rgba(124,58,237,.15), rgba(59,130,246,.08))}
+    .pill{display:inline-flex;align-items:center;gap:8px;background:#0a1020;border:1px solid var(--border);border-radius:999px;padding:6px 10px;color:#cbd5e1}
+    .tabs{margin-top:22px}
+    .tab-list{display:flex;gap:8px;flex-wrap:wrap}
+    .tab-btn{border:1px solid var(--border);background:#0f172a;padding:10px 14px;border-radius:10px;font-weight:600;color:#cbd5e1;cursor:pointer}
+    .tab-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
+    .tab-panel{display:none;margin-top:16px}
+    .tab-panel.active{display:block}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .col-12{grid-column:span 12} .col-8{grid-column:span 8} .col-6{grid-column:span 6} .col-4{grid-column:span 4} .col-3{grid-column:span 3}
+    input[type], textarea, select{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;background:#0a1020;color:#e5e7eb}
+    textarea{min-height:110px;resize:vertical}
+    .small{font-size:.9rem;color:#9aa3b2}
+    .out{background:#0a1020;border:1px solid var(--border);border-radius:12px;padding:12px}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .progress{height:8px;background:#111827;border:1px solid var(--border);border-radius:999px;overflow:hidden}
+    .progress>div{height:100%;background:linear-gradient(90deg,#10b981,#7c3aed);width:14.2%;transition:width .35s ease}
+    .asset-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .asset{border:1px dashed #334155;border-radius:12px;padding:10px}
+    canvas{background:#000;border-radius:12px;border:1px solid var(--border)}
+    .timeline{display:flex;gap:8px;overflow:auto;padding:6px;border:1px solid var(--border);border-radius:10px;background:#0a1020}
+    .clip{min-width:120px;border-radius:8px;padding:6px;background:#1f2937;border:1px solid #334155;color:#cbd5e1}
+    .clip img{width:100%;height:70px;object-fit:cover;border-radius:6px;border:1px solid #334155}
+    .notice{background:#05211a;border:1px solid #0b3b2a;color:#a7f3d0;border-radius:10px;padding:10px}
+    .warn{background:#24110f;border:1px solid #7f1d1d;color:#fecaca;border-radius:10px;padding:10px}
+    .kpi{display:flex;gap:10px;flex-wrap:wrap}
+    @media (max-width:980px){.hero{grid-template-columns:1fr}.col-8{grid-column:span 12}.col-6{grid-column:span 12}.col-4{grid-column:span 12}}
+  </style>
+</head>
+<body>
+<header class="header">
+  <nav class="nav">
+    <div class="brand">🎬 Visual AI Studio</div>
+    <div class="actions">
+      <button id="saveBtn" class="btn">💾 Save</button>
+      <button id="importBtn" class="btn">📥 Import</button>
+      <button id="exportJsonBtn" class="btn">🧾 Export JSON</button>
+      <button id="bundleBtn" class="btn btn-primary">⬇️ Export Bundle (.zip)</button>
+      <button id="resetBtn" class="btn btn-danger">♻️ Reset All</button>
+      <span id="saveIndicator" class="small">Unsaved</span>
+      <span id="jsReady" class="small">JS: loading…</span>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap" data-save-scope>
+  <section class="hero">
+    <div>
+      <div class="pill">Text → Clips → Timeline → Render</div>
+      <h1 style="margin:8px 0 6px">Create your first AI video — inside this guide</h1>
+      <p class="small">Plan scenes, hand-off prompts to Runway/Pika/Luma/Stable Video, bring clips back, assemble a timeline, add captions/branding & watermark, and render a finished video in your browser.</p>
+      <div class="kpi" style="margin-top:10px">
+        <span class="pill">🧱 Scene builder</span><span class="pill">🕒 Pacing tools</span><span class="pill">💬 Beat captions</span><span class="pill">🧭 Safe-area guides</span><span class="pill">🔖 Watermark</span><span class="pill">🎵 Audio*</span>
+      </div>
+      <div class="notice" style="margin-top:10px"><strong>Quick start:</strong> Fill the script → Generate shot list → “Copy to AI” → Upload returned clips → Match target length → Render → Download .webm</div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">What you’ll export</h3>
+      <ul style="margin:0 0 10px 18px">
+        <li>Finished <strong>.webm</strong> video (client-side render)</li>
+        <li>Optional <strong>.mp4</strong> (experimental via FFmpeg.wasm)</li>
+        <li>Project <strong>.json</strong> + Bundle: captions, prompts, project.md</li>
+      </ul>
+      <div class="warn small">Safari/iOS may not support audio mixing during in-browser render. You’ll still get video; add audio in an editor if needed.</div>
+    </div>
+  </section>
+
+  <div class="card" style="margin-top:14px">
+    <div class="grid">
+      <div class="col-8 small" id="progressText"><strong>Step 1/5:</strong> Plan & Script</div>
+      <div class="col-4" role="progressbar" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1">
+        <div class="progress"><div id="progressFill" style="width:20%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="tabs" aria-label="Studio steps">
+    <div class="tab-list" role="tablist">
+      <button class="tab-btn active" role="tab" aria-controls="s1">1) Plan & Script</button>
+      <button class="tab-btn" role="tab" aria-controls="s2" disabled>2) Shot List & Prompts</button>
+      <button class="tab-btn" role="tab" aria-controls="s3" disabled>3) Assets & Timeline</button>
+      <button class="tab-btn" role="tab" aria-controls="s4" disabled>4) Captions & Branding</button>
+      <button class="tab-btn" role="tab" aria-controls="s5" disabled>5) Render & Export</button>
+    </div>
+
+    <!-- Step 1 -->
+    <div id="s1" class="tab-panel active" role="tabpanel" tabindex="-1">
+      <div class="card">
+        <h2 style="margin-top:0">Plan & Script</h2>
+        <div class="grid">
+          <div class="col-6"><label for="projectTitle">Project Title</label><input id="projectTitle" placeholder="e.g., Summer Launch Teaser"/></div>
+          <div class="col-3"><label for="targetLen">Target Length (sec)</label><input id="targetLen" type="number" min="3" max="120" value="12"/></div>
+          <div class="col-3"><label for="aspect">Aspect</label><select id="aspect"><option>16:9</option><option selected>9:16</option><option>1:1</option></select></div>
+          <div class="col-12"><label for="script">Script / Voiceover Text</label><textarea id="script" class="out" placeholder="Short voiceover or on-screen text…"></textarea></div>
+        </div>
+        <div class="toolbar" style="margin-top:10px;flex-wrap:wrap">
+          <button id="genShotlist" class="btn btn-primary">Generate Shot List</button>
+          <button id="copyBrief" class="btn">↗️ Copy Brief to AI</button>
+          <select id="starter" class="btn" style="appearance:none">
+            <option value="">Load Starter Project…</option>
+            <option value="tiktok15">TikTok 15s Hook-Benefit-CTA</option>
+            <option value="teaser20">Product Teaser 20s</option>
+            <option value="howto30">How-To 30s (3 steps)</option>
+          </select>
+          <button id="loadStarterBtn" class="btn">Load</button>
+        </div>
+        <div class="output-block" style="margin-top:10px">
+          <label>Shot List (editable)</label>
+          <textarea id="shotlist" class="out" placeholder="Will auto-fill based on your script…"></textarea>
+        </div>
+        <div class="toolbar" style="margin-top:10px">
+          <button id="toS2" class="btn" disabled>Continue → Shot List & Prompts</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div id="s2" class="tab-panel" role="tabpanel" tabindex="-1">
+      <div class="card">
+        <h2 style="margin-top:0">Shot List & AI Prompts</h2>
+        <p class="small">Refine each scene, duration, movement, and link an asset later. One-click prompts for Runway/Pika/Luma/Stable-Video.</p>
+        <div class="toolbar" style="margin-bottom:8px;flex-wrap:wrap">
+          <button id="addScene" class="btn">➕ Add Scene</button>
+          <button id="copyAllPrompts" class="btn">↗️ Copy All Prompts</button>
+          <span class="small" id="paceInfo" style="margin-left:auto">Target: <span id="paceTarget">0</span>s • Current: <span id="paceCurrent">0</span>s • Δ <span id="paceDelta">0</span>s</span>
+        </div>
+        <div class="toolbar" style="margin-bottom:8px;flex-wrap:wrap">
+          <button id="fitEven" class="btn">⏱️ Fit To Target (Even)</button>
+          <button id="fitByWords" class="btn">⏱️ Fit To Target (By Words)</button>
+        </div>
+        <div id="sceneContainer" class="grid"></div>
+        <div class="toolbar" style="margin-top:10px">
+          <button id="back1" class="btn">← Back</button>
+          <button id="toS3" class="btn" disabled>Continue → Assets & Timeline</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div id="s3" class="tab-panel" role="tabpanel" tabindex="-1">
+      <div class="card">
+        <h2 style="margin-top:0">Assets & Timeline</h2>
+        <div class="grid">
+          <div class="col-8">
+            <div class="toolbar">
+              <button id="uploadMedia" class="btn">📤 Upload Clips/Images</button>
+              <input id="mediaInput" type="file" accept="video/*,image/*" multiple style="display:none"/>
+              <button id="uploadAudio" class="btn">🎵 Upload Audio</button>
+              <input id="audioInput" type="file" accept="audio/*" style="display:none"/>
+              <button id="clearAssets" class="btn">🧹 Clear Assets</button>
+            </div>
+            <div id="assetList" class="asset-list" style="margin-top:10px"></div>
+          </div>
+          <div class="col-4">
+            <div class="card" style="background:#0a1020">
+              <h3 style="margin-top:0">Preview</h3>
+              <canvas id="previewCanvas" width="540" height="960"></canvas>
+              <div class="toolbar" style="margin-top:8px;flex-wrap:wrap">
+                <button id="playPreview" class="btn btn-primary">▶️ Play</button>
+                <button id="stopPreview" class="btn">⏹ Stop</button>
+                <label class="small" style="display:inline-flex;align-items:center;gap:6px"><input type="checkbox" id="showSafe"> Show Safe-Area</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <h3 style="margin:10px 0">Timeline</h3>
+            <div id="timeline" class="timeline"></div>
+          </div>
+        </div>
+        <div class="toolbar" style="margin-top:10px">
+          <button id="back2" class="btn">← Back</button>
+          <button id="toS4" class="btn" disabled>Continue → Captions & Branding</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div id="s4" class="tab-panel" role="tabpanel" tabindex="-1">
+      <div class="card">
+        <h2 style="margin-top:0">Captions, Branding & Watermark</h2>
+        <div class="grid">
+          <div class="col-6"><label for="brandTopText">Title Overlay</label><input id="brandTopText" placeholder="e.g., SUMMER LAUNCH"/></div>
+          <div class="col-6"><label for="brandBottomText">Footer/CTA Overlay</label><input id="brandBottomText" placeholder="e.g., mikeguides.com"/></div>
+          <div class="col-12"><label for="captions">Captions (one line per beat)</label><textarea id="captions" class="out" placeholder="Line 1...\nLine 2..."></textarea></div>
+          <div class="col-4"><label for="bpm">BPM (or VO Beats/Min)</label><input id="bpm" type="number" min="40" max="200" placeholder="e.g., 100"/></div>
+          <div class="col-4"><label for="wordsPerBeat">Words / Beat (approx)</label><input id="wordsPerBeat" type="number" min="1" max="6" value="3"/></div>
+          <div class="col-4"><label>&nbsp;</label><button id="autoBeatCaptions" class="btn">🎚️ Build Beat-Synced Captions</button></div>
+          <div class="col-6"><label>Watermark (PNG w/ transparency)</label><input id="wmFile" type="file" accept="image/png"/></div>
+          <div class="col-3"><label for="wmPos">Position</label><select id="wmPos"><option>top-left</option><option>top-right</option><option selected>bottom-right</option><option>bottom-left</option></select></div>
+          <div class="col-3"><label for="wmAlpha">Opacity (0.0–1.0)</label><input id="wmAlpha" type="number" step="0.1" min="0" max="1" value="0.8"/></div>
+        </div>
+        <div class="toolbar" style="margin-top:10px;flex-wrap:wrap">
+          <button id="genCaptions" class="btn">⚡ Auto-build from Script</button>
+          <button id="toS5" class="btn btn-primary">Continue → Render & Export</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div id="s5" class="tab-panel" role="tabpanel" tabindex="-1">
+      <div class="card">
+        <h2 style="margin-top:0">Render & Export</h2>
+        <div class="grid">
+          <div class="col-4"><label for="fps">FPS</label><select id="fps"><option>24</option><option selected>30</option><option>60</option></select></div>
+          <div class="col-4"><label for="resolution">Resolution</label><select id="resolution"><option>1080x1920</option><option selected>720x1280</option><option>1080x1080</option></select></div>
+          <div class="col-4"><label>&nbsp;</label><label class="small" style="display:inline-flex;gap:6px;align-items:center"><input id="enableMp4" type="checkbox"/> Enable MP4 (experimental)</label></div>
+          <div class="col-12 notice small" id="compatNote">We’ll try to include audio by merging the canvas stream and your audio track. If blocked, we’ll export video-only.</div>
+        </div>
+        <div class="toolbar" style="margin-top:10px;flex-wrap:wrap">
+          <button id="renderBtn" class="btn btn-primary">🎞️ Render Video</button>
+          <button id="downloadBtn" class="btn" disabled>⬇️ Download .webm</button>
+          <button id="convertMp4Btn" class="btn" disabled>🧪 Convert to MP4</button>
+          <button id="bundleBtn2" class="btn">⬇️ Export Bundle (.zip)</button>
+        </div>
+        <div class="output-block" style="margin-top:10px">
+          <label>Render Log</label>
+          <textarea id="renderLog" class="out" style="min-height:160px" readonly></textarea>
+        </div>
+        <div class="warn small" style="margin-top:8px">MP4/H.264 export uses FFmpeg.wasm and may not work on all devices/browsers. If it fails, re-encode the WebM in a desktop editor or ffmpeg.</div>
+      </div>
+    </div>
+  </section>
+
+  <p class="small" style="opacity:.8;margin-top:18px">© 2025 MikeGuides • Visual AI Studio EPIC v1.2.1</p>
+</main>
+
+<input id="importFile" type="file" accept="application/json" style="display:none"/>
+<script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js" crossorigin="anonymous"></script>
+<script>
+// ---------- helpers ----------
+const $=(s,c=document)=>c.querySelector(s); const $$=(s,c=document)=>Array.from(c.querySelectorAll(s));
+const KEY='visual_ai_studio_epic_v1_2_1';
+const now=()=>new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+const log=(msg)=>{ const el=$('#renderLog'); if(el){ el.value += (el.value?'\n':'')+ msg; el.scrollTop=el.scrollHeight; } };
+function download(filename, blobOrText, type){
+  const blob = blobOrText instanceof Blob ? blobOrText : new Blob([blobOrText], {type: type||'text/plain'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=filename; a.click(); URL.revokeObjectURL(url);
+}
+function markSaved(){ const el=$('#saveIndicator'); if(el) el.textContent='Saved • '+now(); }
+function markDirty(){ const el=$('#saveIndicator'); if(el && !el.textContent.startsWith('Saved')) el.textContent='Unsaved'; }
+function sum(arr){ return arr.reduce((a,b)=>a+(+b||0),0); }
+function wc(s){ return (s||'').trim().split(/\s+/).filter(Boolean).length; }
+
+// ---------- state ----------
+let scenes=[]; // {id, prompt, duration, movement, notes, assetId}
+let assets=[]; // {id, type:'image'|'video', url, thumb, name, duration?}
+let audioTrack=null; // {url, name}
+let captionBeats=[]; // [{start, end, text}] optional
+let watermark={img:null, pos:'bottom-right', alpha:0.8};
+
+function collectState(){
+  return {
+    projectTitle: $('#projectTitle').value,
+    targetLen: $('#targetLen').value,
+    aspect: $('#aspect').value,
+    script: $('#script').value,
+    shotlist: $('#shotlist').value,
+    scenes,
+    assets: assets.map(a=>({id:a.id,type:a.type,url:a.url,name:a.name,duration:a.duration||0})),
+    audioTrack,
+    captions: $('#captions').value,
+    bpm: $('#bpm').value,
+    wordsPerBeat: $('#wordsPerBeat').value,
+    brandTopText: $('#brandTopText').value,
+    brandBottomText: $('#brandBottomText').value,
+    fps: $('#fps').value,
+    resolution: $('#resolution').value,
+    enableMp4: $('#enableMp4').checked,
+    step: currentStep()
+  };
+}
+function applyState(s){
+  if(!s) return;
+  $('#projectTitle').value = s.projectTitle||'';
+  $('#targetLen').value = s.targetLen||12;
+  $('#aspect').value = s.aspect||'9:16';
+  $('#script').value = s.script||'';
+  $('#shotlist').value = s.shotlist||'';
+  scenes = Array.isArray(s.scenes)? s.scenes : [];
+  assets = Array.isArray(s.assets)? s.assets.map(x=>({...x, thumb:null})) : [];
+  audioTrack = s.audioTrack||null;
+  $('#captions').value = s.captions||'';
+  $('#bpm').value = s.bpm||'';
+  $('#wordsPerBeat').value = s.wordsPerBeat||'3';
+  $('#brandTopText').value = s.brandTopText||'';
+  $('#brandBottomText').value = s.brandBottomText||'';
+  $('#fps').value = s.fps||'30';
+  $('#resolution').value = s.resolution||'720x1280';
+  $('#enableMp4').checked = !!s.enableMp4;
+  renderScenes(); renderAssets(); renderTimeline(); updatePaceInfo();
+  if(typeof s.step==='number') gotoStep(s.step);
+}
+function restore(){ try{ const raw=localStorage.getItem(KEY); if(raw){ applyState(JSON.parse(raw)); markSaved(); } else { markDirty(); } } catch(e){ console.warn(e); markDirty(); } }
+function autosaveWire(){
+  $$('.wrap input, .wrap textarea, .wrap select').forEach(el=>{
+    ['input','change','keyup','blur'].forEach(evt=>el.addEventListener(evt, ()=>{
+      localStorage.setItem(KEY, JSON.stringify(collectState())); markSaved();
+    }));
+  });
+  // Live gating: if Shotlist has content, enable Step 2
+  const sl=$('#shotlist');
+  if(sl){ sl.addEventListener('input', ()=>{ const ok=!!sl.value.trim(); setStepEnabled(2, ok); }); }
+}
+
+// ---------- tabs ----------
+function updateProgress(step){
+  const fill=$('#progressFill'); if(fill){ fill.style.width=(step*20)+'%'; }
+  const txt=$('#progressText'); const names=['Plan & Script','Shot List & Prompts','Assets & Timeline','Captions & Branding','Render & Export'];
+  if(txt) txt.innerHTML = '<strong>Step '+step+'/5:</strong> '+names[step-1];
+  const bar=$('[role="progressbar"]'); if(bar) bar.setAttribute('aria-valuenow', String(step));
+}
+function currentStep(){ const idx=$$('[role="tab"]').findIndex(t=>t.classList.contains('active')); return idx>=0?idx+1:1; }
+function gotoStep(step){
+  const tabs=$$('[role="tab"]'); const panels=$$('.tab-panel');
+  tabs.forEach((t,i)=>{ const on=i===step-1; t.classList.toggle('active',on); t.setAttribute('aria-selected',on?'true':'false'); });
+  panels.forEach((p,i)=>{ p.classList.toggle('active', i===step-1); });
+  updateProgress(step);
+}
+function setStepEnabled(step, enabled){
+  const tabs=$$('[role="tab"]'); if(tabs[step-1]) tabs[step-1].disabled=!enabled;
+  const btnIds={1:'toS2',2:'toS3',4:'toS5'};
+  const btn=$('#'+btnIds[step]); if(btn) btn.disabled=!enabled;
+}
+
+// ---------- Step 1: shot list + starters ----------
+function starters(kind){
+  if(kind==='tiktok15') return {
+    script: "Stop scrolling. You’re about to learn the 3-step shortcut to [your topic]. Ready? Let’s go! Step one… Step two… Step three… Save this for later.",
+    target: 15,
+    scenes: [
+      "Hook: close-up, bold text overlay",
+      "Tease: quick demo of the outcome",
+      "Step 1: action",
+      "Step 2: action",
+      "Step 3: action",
+      "CTA: Follow for more + URL"
+    ]
+  };
+  if(kind==='teaser20') return {
+    script: "This summer, meet the fastest way to [benefit]. Smooth motion, bold visuals, and a surprising finish. Ready to see it?",
+    target: 20,
+    scenes: [
+      "Epic opener reveal",
+      "Feature highlight 1",
+      "Feature highlight 2",
+      "Lifestyle shot",
+      "Logo stinger + CTA"
+    ]
+  };
+  if(kind==='howto30') return {
+    script: "Here’s a 30-second guide to [task]. First, gather your tools. Next, do this. Finally, polish with this pro tip. Now you’re ready.",
+    target: 30,
+    scenes: [
+      "Intro title + outcome",
+      "Gather tools",
+      "Do step 1",
+      "Do step 2",
+      "Pro tip",
+      "Before/after + CTA"
+    ]
+  };
+  return null;
+}
+function loadStarter(){
+  const v=$('#starter').value; const st=starters(v); if(!st) return;
+  $('#script').value=st.script; $('#targetLen').value=st.target;
+  $('#shotlist').value = st.scenes.map((s,i)=>`Scene ${i+1}: ${s}`).join('\n');
+  setStepEnabled(2,true);
+}
+
+function generateShotlist(){
+  const script=$('#script').value.trim();
+  const target=parseInt($('#targetLen').value||'12',10);
+  if(!script){ alert('Add a short script first.'); return; }
+  const lines = script.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const n = Math.max(3, Math.min(7, lines.length+2));
+  const per = Math.max(2, Math.round(target/n));
+  const shots = Array.from({length:n}, (_,i)=>`Scene ${i+1}: ${lines[i%lines.length]||'Visual beat'} (≈${per}s)`);
+  $('#shotlist').value = shots.join('\n');
+  setStepEnabled(2,true);
+}
+
+// ---------- Step 2: scenes + pacing ----------
+function sceneCard(scene){
+  const div=document.createElement('div');
+  div.className='col-12';
+  div.innerHTML = `
+    <div class="card" data-id="${scene.id}">
+      <div class="grid">
+        <div class="col-6"><label>Scene Prompt</label><textarea class="out s-prompt" placeholder="Describe the shot…">${scene.prompt||''}</textarea></div>
+        <div class="col-2"><label>Duration (s)</label><input type="number" class="s-duration" min="1" max="20" value="${scene.duration||3}"/></div>
+        <div class="col-2"><label>Movement</label><select class="s-move">
+          <option${scene.movement==='Static'?' selected':''}>Static</option>
+          <option${scene.movement==='Pan Left'?' selected':''}>Pan Left</option>
+          <option${scene.movement==='Pan Right'?' selected':''}>Pan Right</option>
+          <option${scene.movement==='Zoom In'?' selected':''}>Zoom In</option>
+          <option${scene.movement==='Zoom Out'?' selected':''}>Zoom Out</option>
+          <option${scene.movement==='Ken Burns'?' selected':''}>Ken Burns</option>
+        </select></div>
+        <div class="col-2"><label>Asset</label>
+          <select class="s-asset"><option value="">(none)</option>${assets.map(a=>`<option value="${a.id}" ${scene.assetId===a.id?'selected':''}>${a.name}</option>`).join('')}</select>
+        </div>
+        <div class="col-12"><label>Notes</label><input class="s-notes" placeholder="Optional production notes" value="${scene.notes||''}"/></div>
+      </div>
+      <div class="toolbar" style="margin-top:8px;flex-wrap:wrap">
+        <button class="btn ho-runway">↗️ Copy for Runway</button>
+        <button class="btn ho-pika">↗️ Copy for Pika</button>
+        <button class="btn ho-luma">↗️ Copy for Luma</button>
+        <button class="btn ho-svd">↗️ Copy for Stable Video</button>
+        <button class="btn" data-del>🗑️ Remove</button>
+      </div>
+    </div>`;
+  const card=div.firstElementChild;
+  card.querySelector('.s-prompt').addEventListener('input',e=>{ scene.prompt=e.target.value; markSaved(); updatePaceInfo(); });
+  card.querySelector('.s-duration').addEventListener('input',e=>{ scene.duration=parseInt(e.target.value||'3',10); markSaved(); updatePaceInfo(); renderTimeline(); });
+  card.querySelector('.s-move').addEventListener('change',e=>{ scene.movement=e.target.value; markSaved(); });
+  card.querySelector('.s-asset').addEventListener('change',e=>{ scene.assetId=e.target.value||null; renderTimeline(); markSaved(); });
+  card.querySelector('.s-notes').addEventListener('input',e=>{ scene.notes=e.target.value; markSaved(); });
+  card.querySelector('[data-del]').addEventListener('click',()=>{ scenes=scenes.filter(s=>s.id!==scene.id); renderScenes(); renderTimeline(); markSaved(); updatePaceInfo(); });
+  const copy=(txt)=>{ navigator.clipboard?.writeText(txt); alert('Copied to clipboard'); };
+  const base=(tool)=>`Create a ${$('#aspect').value} ${scene.duration||3}s shot. Movement: ${scene.movement||'Static'}. Prompt: "${(scene.prompt||'Describe the scene')}". Style: cinematic, coherent motion, sharp details.`;
+  card.querySelector('.ho-runway').addEventListener('click',()=>copy(base('runway')+` (Runway: Motion Brush Off, Seed locked for consistency)`));
+  card.querySelector('.ho-pika').addEventListener('click',()=>copy(base('pika')+` (Pika: v1/v2; add "camera ${scene.movement||'static'}")`));
+  card.querySelector('.ho-luma').addEventListener('click',()=>copy(base('luma')+` (Luma: High fidelity, strong adherence)`));
+  card.querySelector('.ho-svd').addEventListener('click',()=>copy(base('svd')+` (Stable Video Diffusion; steps 30, guidance 7)`));
+  return div;
+}
+function renderScenes(){
+  const wrap=$('#sceneContainer'); wrap.innerHTML='';
+  scenes.forEach(s=>wrap.appendChild(sceneCard(s)));
+  $('#toS3').disabled = scenes.length===0;
+  updatePaceInfo();
+}
+function addSceneRow(text=''){
+  const dGuess=3;
+  const sc={id:String(Date.now()+Math.random()),prompt=text,duration:dGuess,movement:'Static',notes:'',assetId:null};
+  scenes.push(sc); renderScenes(); markSaved();
+}
+
+function updatePaceInfo(){
+  const target = Number($('#targetLen').value||'0');
+  const total = sum(scenes.map(s=>Number(s.duration)||0));
+  $('#paceTarget').textContent = target;
+  $('#paceCurrent').textContent = total;
+  $('#paceDelta').textContent = (total-target);
+}
+function fitToTarget(mode='even'){
+  const target = Math.max(1, Number($('#targetLen').value||'12'));
+  if(!scenes.length){ alert('Add scenes first.'); return; }
+  let weights = scenes.map(s=>1);
+  if(mode==='words'){
+    weights = scenes.map(s=>Math.max(1, wc(s.prompt)));
+  }
+  const weightSum = sum(weights);
+  let durations = weights.map(w=>Math.max(1, Math.round(target * (w/weightSum))));
+  let diff = target - sum(durations);
+  while(diff!==0){
+    const idx = diff>0 ? durations.indexOf(Math.min(...durations)) : durations.indexOf(Math.max(...durations));
+    durations[idx] += (diff>0?1:-1);
+    diff = target - sum(durations);
+  }
+  scenes.forEach((s,i)=>s.duration = durations[i]);
+  renderScenes(); renderTimeline(); markSaved();
+}
+
+// ---------- Step 3: assets & timeline ----------
+function renderAssets(){
+  const list=$('#assetList'); list.innerHTML='';
+  assets.forEach(a=>{
+    const div=document.createElement('div'); div.className='asset';
+    div.innerHTML=`<div class="small" style="opacity:.8">${a.type.toUpperCase()} • ${a.name}</div>
+      <video ${a.type==='video'?'':'style="display:none"'} src="${a.url}" muted playsinline width="100%"></video>
+      <img ${a.type==='image'?'':'style="display:none"'} src="${a.url}" style="width:100%;border-radius:8px;opacity:.9"/>
+      <div class="toolbar" style="margin-top:6px">
+        <button class="btn" data-add>➕ Add to Timeline</button>
+        <button class="btn" data-rm>🗑 Remove</button>
+      </div>`;
+    div.querySelector('[data-add]').addEventListener('click',()=>{
+      const scene = scenes.find(s=>!s.assetId);
+      if(scene){ scene.assetId=a.id; renderScenes(); }
+      renderTimeline(); markSaved();
+    });
+    div.querySelector('[data-rm]').addEventListener('click',()=>{
+      assets=assets.filter(x=>x.id!==a.id); scenes.forEach(s=>{ if(s.assetId===a.id) s.assetId=null; });
+      renderAssets(); renderScenes(); renderTimeline(); markSaved();
+    });
+    list.appendChild(div);
+  });
+}
+function renderTimeline(){
+  const tl=$('#timeline'); tl.innerHTML='';
+  scenes.forEach((s,idx)=>{
+    const clip=document.createElement('div'); clip.className='clip';
+    const asset = assets.find(a=>a.id===s.assetId);
+    clip.innerHTML = `${asset?`<img src="${asset.type==='image'?asset.url:''}" alt="">`:''}
+      <div class="small" style="margin-top:4px"><strong>S${idx+1}</strong> • ${s.duration||3}s ${asset?('• '+asset.type):''}</div>`;
+    tl.appendChild(clip);
+  });
+  $('#toS4').disabled = scenes.every(s=>!s.assetId);
+}
+
+// uploads
+$('#uploadMedia').addEventListener('click',()=>$('#mediaInput').click());
+$('#mediaInput').addEventListener('change', async (e)=>{
+  const files = Array.from(e.target.files||[]);
+  for(const f of files){
+    const url=URL.createObjectURL(f);
+    let type = f.type.startsWith('video')?'video':'image';
+    let duration=0;
+    if(type==='video'){
+      duration = await new Promise(res=>{
+        const v=document.createElement('video'); v.preload='metadata'; v.src=url;
+        v.onloadedmetadata=()=>res(v.duration||0); v.onerror=()=>res(0);
+      });
+    }
+    assets.push({id:String(Date.now()+Math.random()), type, url, name:f.name, duration});
+  }
+  renderAssets(); markSaved(); e.target.value='';
+});
+$('#uploadAudio').addEventListener('click',()=>$('#audioInput').click());
+$('#audioInput').addEventListener('change', (e)=>{
+  const f=e.target.files?.[0]; if(!f) return;
+  const url=URL.createObjectURL(f); audioTrack={url, name:f.name}; markSaved(); alert('Audio added: '+f.name);
+  e.target.value='';
+});
+$('#clearAssets').addEventListener('click',()=>{ if(confirm('Remove all assets?')){ assets=[]; scenes.forEach(s=>s.assetId=null); renderAssets(); renderScenes(); renderTimeline(); markSaved(); } });
+
+// preview (canvas)
+let previewRAF=null, previewStart=0, playing=false;
+async function drawFrame(ctx, w, h, t, timeline){
+  let acc=0;
+  for(const seg of timeline){
+    const dur=seg.duration;
+    if(t<acc+dur){
+      const local=t-acc;
+      await renderSegment(ctx,w,h,seg,local,dur);
+      return;
+    }
+    acc+=dur;
+  }
+  stopPreview();
+}
+function drawSafeArea(ctx,w,h){
+  const padX = w*0.06, padY = h*0.12;
+  ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.lineWidth=2;
+  ctx.strokeRect(padX, padY, w-2*padX, h-2*padY);
+}
+async function renderSegment(ctx,w,h,seg,local,dur){
+  ctx.clearRect(0,0,w,h);
+  if(seg.asset && seg.asset.type==='video'){
+    const v=seg._video || (seg._video=document.createElement('video'));
+    if(!v.src){ v.src=seg.asset.url; v.muted=true; v.playsInline=true; await v.play().catch(()=>{}); }
+    try{ ctx.drawImage(v, 0,0,w,h); }catch(e){}
+  } else if(seg.asset && seg.asset.type==='image'){
+    const img=seg._img || (seg._img=new Image(), seg._img.src=seg.asset.url, seg._img);
+    if(img.complete){
+      const zoom = seg.movement.includes('Zoom')? (seg.movement==='Zoom In'? 1+0.08*(local/dur) : 1.08-0.08*(local/dur)) : 1.02;
+      const panX = seg.movement==='Pan Left'? -40*(local/dur) : seg.movement==='Pan Right'? 40*(local/dur) : 0;
+      const iw=img.width, ih=img.height; const scale=Math.max(w/iw, h/ih)*zoom;
+      const rw=iw*scale, rh=ih*scale;
+      ctx.drawImage(img, (w-rw)/2+panX, (h-rh)/2, rw, rh);
+    } else { ctx.fillStyle='#111'; ctx.fillRect(0,0,w,h); }
+  } else {
+    const g=ctx.createLinearGradient(0,0,w,h); g.addColorStop(0,'#111'); g.addColorStop(1,'#222');
+    ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='#9aa3b2'; ctx.fillText('No asset', w/2-40, h/2);
+  }
+  ctx.fillStyle='rgba(0,0,0,.35)'; ctx.fillRect(0,0,w,60); ctx.fillRect(0,h-60,w,60);
+  ctx.fillStyle='white'; ctx.font='bold 26px Inter,system-ui'; ctx.textAlign='center';
+  const topText=$('#brandTopText').value.trim(); if(topText) ctx.fillText(topText, w/2, 38);
+  const bottomText=$('#brandBottomText').value.trim(); if(bottomText) ctx.fillText(bottomText, w/2, h-22);
+  const cap = captionAtTime(seg.start+local);
+  if(cap){
+    ctx.fillStyle='rgba(0,0,0,.55)'; const y=h-110; ctx.fillRect(20,y-36,w-40,46);
+    ctx.fillStyle='white'; ctx.font='24px Inter,system-ui'; ctx.fillText(cap, w/2, y);
+  }
+  if(watermark.img){
+    const iw=watermark.img.width, ih=watermark.img.height;
+    const scale=Math.min(w*0.25/iw, h*0.12/ih);
+    const ww=iw*scale, wh=ih*scale;
+    let x=20, y=20;
+    if(watermark.pos.includes('right')) x=w-ww-20;
+    if(watermark.pos.includes('bottom')) y=h-wh-20;
+    ctx.globalAlpha = watermark.alpha;
+    ctx.drawImage(watermark.img, x, y, ww, wh);
+    ctx.globalAlpha = 1.0;
+  }
+  if($('#showSafe').checked){ drawSafeArea(ctx,w,h); }
+}
+function buildTimeline(){
+  let start=0;
+  return scenes.map(s=>{
+    const asset=assets.find(a=>a.id===s.assetId)||null;
+    const obj={start, duration: Math.max(1, Number(s.duration)||3), movement: s.movement||'Static', asset};
+    start+=obj.duration; return obj;
+  });
+}
+function startPreview(){
+  if(playing) return; playing=true; const canvas=$('#previewCanvas'); const ctx=canvas.getContext('2d');
+  const [w,h] = ($('#resolution').value||'720x1280').split('x').map(Number);
+  canvas.width=w; canvas.height=h;
+  const tl=buildTimeline(); if(!tl.length){ alert('No scenes on the timeline.'); playing=false; return; }
+  previewStart=performance.now();
+  const step=(ts)=>{
+    if(!playing) return;
+    const t=(ts-previewStart)/1000;
+    drawFrame(ctx,w,h,t,tl).then(()=>{ previewRAF=requestAnimationFrame(step); });
+  };
+  previewRAF=requestAnimationFrame(step);
+}
+function stopPreview(){ playing=false; if(previewRAF) cancelAnimationFrame(previewRAF); previewRAF=null; }
+
+$('#playPreview').addEventListener('click', startPreview);
+$('#stopPreview').addEventListener('click', stopPreview);
+
+// ---------- captions (beat sync) ----------
+function buildBeatCaptions(){
+  const lines = ($('#captions').value||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const bpm = Number($('#bpm').value||'0');
+  const wpb = Math.max(1, Number($('#wordsPerBeat').value||'3'));
+  const total = sum(scenes.map(s=>Number(s.duration)||0));
+  if(!lines.length || !total){ alert('Add captions and scenes first.'); return; }
+  const beatDur = bpm>0 ? 60/bpm : total/lines.length;
+  captionBeats = [];
+  let t=0;
+  for(const line of lines){
+    const beatsNeeded = Math.max(1, Math.ceil(wc(line)/wpb));
+    const dur = beatsNeeded * beatDur;
+    captionBeats.push({start:t, end:Math.min(total, t+dur), text:line});
+    t += dur;
+    if(t>=total) break;
+  }
+}
+function captionAtTime(t){
+  if(captionBeats.length){
+    const c = captionBeats.find(x=>t>=x.start && t<=x.end);
+    return c? c.text : '';
+  } else {
+    const caps=($('#captions').value||'').split(/\n+/).filter(Boolean);
+    if(!caps.length) return '';
+    const total = sum(scenes.map(s=>Number(s.duration)||0));
+    const idx=Math.min(caps.length-1, Math.floor((t/Math.max(1,total))*caps.length));
+    return caps[idx];
+  }
+}
+
+// ---------- Step 5: render ----------
+let renderedBlob=null;
+async function renderVideo(){
+  renderedBlob=null; $('#downloadBtn').disabled=true; $('#convertMp4Btn').disabled=true;
+  const canvas=$('#previewCanvas'); const ctx=canvas.getContext('2d');
+  const [w,h] = ($('#resolution').value||'720x1280').split('x').map(Number);
+  canvas.width=w; canvas.height=h;
+  const fps=Number($('#fps').value||'30');
+  const tl=buildTimeline(); if(!tl.length){ alert('Add scenes first.'); return; }
+  log('Initializing recorder…');
+  const canvasStream = canvas.captureStream(fps);
+  let finalStream = canvasStream;
+  let audioEl=null;
+  if(audioTrack && audioTrack.url && canvasStream){
+    try{
+      audioEl = new Audio(audioTrack.url); audioEl.loop=false; audioEl.crossOrigin='anonymous';
+      const audioStream = audioEl.captureStream ? audioEl.captureStream() : null;
+      if(audioStream && audioStream.getAudioTracks().length){
+        finalStream = new MediaStream([ ...canvasStream.getVideoTracks(), ...audioStream.getAudioTracks() ]);
+        log('Audio stream merged.');
+      } else {
+        log('Audio capture not supported; exporting video-only.');
+      }
+    }catch(e){ log('Audio merge failed; video-only.'); }
+  }
+  const chunks=[];
+  let mr;
+  try{
+    mr = new MediaRecorder(finalStream, {mimeType: 'video/webm;codecs=vp9,opus'});
+  }catch(e){
+    try{ mr = new MediaRecorder(finalStream, {mimeType: 'video/webm'}); }
+    catch(err){ alert('MediaRecorder not supported in this browser.'); return; }
+  }
+  mr.ondataavailable = (e)=>{ if(e.data && e.data.size) chunks.push(e.data); };
+  mr.onstop = ()=>{
+    renderedBlob = new Blob(chunks, {type:'video/webm'});
+    $('#downloadBtn').disabled=false; download('rendered-video.webm', renderedBlob); log('Render complete ✅');
+    if($('#enableMp4').checked){ $('#convertMp4Btn').disabled=false; }
+  };
+  mr.start(100);
+  if(audioEl){ try{ await audioEl.play(); } catch(e){ } }
+  const total = sum(tl.map(x=>x.duration));
+  const frameCount = Math.ceil(total*fps);
+  log('Rendering '+frameCount+' frames…');
+  let frame=0;
+  const tick=async()=>{
+    const t=frame/fps;
+    await drawFrame(ctx,w,h,t,tl);
+    frame++;
+    if(frame<frameCount){ setTimeout(tick, 0); }
+    else {
+      mr.stop();
+      canvasStream.getTracks().forEach(tr=>tr.stop());
+      if(audioEl){ audioEl.pause(); audioEl.src=''; }
+    }
+  };
+  tick();
+}
+
+// ---------- FFmpeg.wasm (lazy) ----------
+let ffmpegReady=false, ffmpeg=null, ffmpegLoading=false;
+async function loadFFmpeg(){
+  if(ffmpegReady||ffmpegLoading) return;
+  ffmpegLoading=true;
+  log('Loading FFmpeg.wasm (this can take ~10–20s on first load)…');
+  try{
+    await new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/ffmpeg.min.js';
+      s.crossOrigin='anonymous';
+      s.onload = () => res(); s.onerror = () => rej(new Error('CDN load failed'));
+      document.head.appendChild(s);
+    });
+    const { createFFmpeg, fetchFile } = window.FFmpeg || {};
+    if(!createFFmpeg || !fetchFile) throw new Error('FFmpeg globals not available');
+    ffmpeg = createFFmpeg({ log: true });
+    await ffmpeg.load();
+    ffmpegReady=true;
+    log('FFmpeg loaded ✅');
+  }catch(e){
+    log('FFmpeg failed to load: '+(e.message||e));
+  } finally { ffmpegLoading=false; }
+}
+async function convertToMp4(){
+  if(!renderedBlob){ alert('Render a WebM first.'); return; }
+  if(!ffmpegReady){ await loadFFmpeg(); }
+  if(!ffmpegReady){ alert('FFmpeg not available. Use desktop ffmpeg or an editor to convert.'); return; }
+  log('Converting to MP4 (experimental)…');
+  try{
+    const { fetchFile } = window.FFmpeg;
+    ffmpeg.FS('writeFile', 'in.webm', await fetchFile(renderedBlob));
+    try{
+      await ffmpeg.run('-i','in.webm','-c:v','libx264','-preset','veryfast','-pix_fmt','yuv420p','-c:a','aac','-b:a','192k','out.mp4');
+    }catch(err){
+      log('H.264/AAC not available in this build; falling back to mpeg4/mp3.');
+      await ffmpeg.run('-i','in.webm','-c:v','mpeg4','-q:v','5','-pix_fmt','yuv420p','-c:a','libmp3lame','-b:a','192k','out.mp4');
+    }
+    const data = ffmpeg.FS('readFile', 'out.mp4');
+    const blob = new Blob([data.buffer], {type:'video/mp4'});
+    download('rendered-video.mp4', blob, 'video/mp4');
+    log('MP4 export ready ✅');
+  }catch(e){
+    log('MP4 conversion failed: '+(e.message||e));
+    alert('MP4 conversion failed on this device. Use the WebM or convert on desktop with ffmpeg.');
+  }
+}
+
+// ---------- captions helpers ----------
+function buildCaptionsFromScript(){
+  const lines = ($('#script').value||'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  if(!lines.length){ alert('Add some script text first.'); return; }
+  const out = lines.map(s=> (s.length>64? s.slice(0,62)+'…' : s) );
+  $('#captions').value = out.join('\n');
+}
+
+// ---------- watermark ----------
+$('#wmFile').addEventListener('change',(e)=>{
+  const f=e.target.files?.[0]; if(!f) return;
+  const url=URL.createObjectURL(f);
+  const img=new Image(); img.onload=()=>{ watermark.img=img; }; img.src=url;
+});
+$('#wmPos').addEventListener('change',(e)=>{ watermark.pos = e.target.value; });
+$('#wmAlpha').addEventListener('input',(e)=>{ watermark.alpha = Math.max(0, Math.min(1, Number(e.target.value)||0.8)); });
+
+// ---------- header actions ----------
+$('#saveBtn').addEventListener('click', ()=>{ localStorage.setItem(KEY, JSON.stringify(collectState())); markSaved(); });
+$('#exportJsonBtn').addEventListener('click', ()=> download('visual-ai-studio-session.json', JSON.stringify(collectState(),null,2), 'application/json'));
+$('#importBtn').addEventListener('click', ()=>$('#importFile').click());
+$('#importFile').addEventListener('change', async (e)=>{ try{ const f=e.target.files?.[0]; if(!f) return; const text=await f.text(); const s=JSON.parse(text); applyState(s); localStorage.setItem(KEY, JSON.stringify(s)); markSaved(); alert('Import complete'); } catch(err){ alert('Import failed: '+(err.message||String(err))); } finally{ e.target.value=''; } });
+$('#resetBtn').addEventListener('click', ()=>{ if(confirm('Reset ALL fields and clear saved session?')){ localStorage.removeItem(KEY); location.reload(); } });
+function bundleZip(){
+  if(typeof JSZip==='undefined'){ alert('JSZip missing.'); return; }
+  const zip=new JSZip();
+  zip.file('session.json', JSON.stringify(collectState(),null,2));
+  const md = [
+    '# Visual AI Studio Project: '+($('#projectTitle').value||'Untitled'),
+    '',
+    '## Script', $('#script').value||'',
+    '',
+    '## Shot List', $('#shotlist').value||'',
+    '',
+    '## Scenes',
+    ...scenes.map((s,i)=>`- S${i+1}: ${s.duration||3}s, ${s.movement||'Static'} — ${(s.prompt||'')}`),
+    '',
+    '## Captions', $('#captions').value||'',
+    '',
+    'Generated '+new Date().toLocaleString()
+  ].join('\n');
+  zip.file('project.md', md);
+  zip.file('assets.txt', assets.map(a=>`${a.type.toUpperCase()} ${a.name} — ${a.url}`).join('\n'));
+  zip.generateAsync({type:'blob'}).then(blob=>download('visual-ai-studio-bundle.zip', blob));
+}
+$('#bundleBtn').addEventListener('click', bundleZip);
+$('#bundleBtn2').addEventListener('click', bundleZip);
+
+// ---------- wiring ----------
+document.addEventListener('click', (e)=>{
+  const tab=e.target.closest('[role="tab"]'); if(tab && !tab.disabled){ const tabs=$$('[role="tab"]'); gotoStep(tabs.indexOf(tab)+1); }
+});
+$('#genShotlist').addEventListener('click', generateShotlist);
+$('#copyBrief').addEventListener('click', ()=>{
+  const txt = [
+    '# VIDEO BRIEF',
+    'Title: '+($('#projectTitle').value||'Untitled'),
+    'Target: '+($('#targetLen').value||'12')+' seconds, Aspect '+($('#aspect').value||'9:16'),
+    '',
+    'Script:',
+    $('#script').value||'(add script)'
+  ].join('\n');
+  navigator.clipboard?.writeText(txt); alert('Brief copied for your AI');
+});
+$('#loadStarterBtn').addEventListener('click', loadStarter);
+$('#toS2').addEventListener('click', ()=>gotoStep(2));
+$('#back1').addEventListener('click', ()=>gotoStep(1));
+$('#toS3').addEventListener('click', ()=>gotoStep(3));
+$('#back2').addEventListener('click', ()=>gotoStep(2));
+$('#toS4').addEventListener('click', ()=>gotoStep(4));
+$('#toS5').addEventListener('click', ()=>{ setStepEnabled(5,true); gotoStep(5); });
+
+$('#addScene').addEventListener('click', ()=> addSceneRow('A striking opener showing the core idea…'));
+$('#copyAllPrompts').addEventListener('click', ()=>{
+  const txt = scenes.map((s,i)=>`S${i+1} (${s.duration||3}s, ${s.movement||'Static'}): ${s.prompt||''}`).join('\n');
+  navigator.clipboard?.writeText(txt); alert('All scene prompts copied');
+});
+$('#fitEven').addEventListener('click', ()=>fitToTarget('even'));
+$('#fitByWords').addEventListener('click', ()=>fitToTarget('words'));
+
+$('#genCaptions').addEventListener('click', buildCaptionsFromScript);
+$('#autoBeatCaptions').addEventListener('click', ()=>{ buildBeatCaptions(); alert('Beat-synced captions scheduled across the timeline.'); });
+$('#renderBtn').addEventListener('click', renderVideo);
+$('#downloadBtn').addEventListener('click', ()=>{ if(renderedBlob) download('rendered-video.webm', renderedBlob); });
+$('#convertMp4Btn').addEventListener('click', convertToMp4);
+
+function renderOnLoad(){
+  if(($('#shotlist').value||'').trim()) setStepEnabled(2,true);
+  if(scenes.length) setStepEnabled(3,true);
+  if(assets.some(a=>a.type==='video'||a.type==='image')) setStepEnabled(4,true);
+  if($('#captions').value.trim() || $('#brandTopText').value.trim() || $('#brandBottomText').value.trim()) setStepEnabled(5,true);
+}
+
+// init
+function init(){
+  $('#jsReady').textContent='JS: ready';
+  autosaveWire(); restore(); renderOnLoad();
+}
+if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+</script>
+</body>
+</html>
 
