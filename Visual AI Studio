@@ -409,19 +409,21 @@ function addSceneRow(text='', dGuess=3){
 }
 
 function updatePaceInfo(){
-  const target = Number($('#targetLen').value||'0');
-  const total  = sum(scenes.map(s=>Number(s.duration)||0));
+  const target = Number($('#targetLen').value || '0');
+  const total  = sum(scenes.map(s => Number(s.duration) || 0));
   const count  = scenes.length;
 
-  const elTarget = $('#paceTarget');
-  const elTotal  = $('#kTotal');       // <-- use kTotal (exists in the UI)
-  const elDelta  = $('#paceDelta');
-  const elCount  = $('#kScenes');
+  const setText = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = String(val);
+  };
 
-  if (elTarget) elTarget.textContent = target;
-  if (elTotal)  elTotal.textContent  = total;
-  if (elDelta)  elDelta.textContent  = (total - target);
-  if (elCount)  elCount.textContent  = count;
+  // Support either naming convention
+  setText('paceTarget', target);
+  setText('paceCurrent', total); // old code path
+  setText('kTotal', total);      // UI actually has this ID
+  setText('paceDelta', total - target);
+  setText('kScenes', count);
 }
 
 function fitToTarget(mode='even'){
